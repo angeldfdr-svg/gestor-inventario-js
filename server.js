@@ -1,4 +1,3 @@
-// Gestor de Inventário - Servidor HTTP e API REST
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -10,7 +9,6 @@ const DATA_DIR = path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'inventory.json');
 const PUBLIC_DIR = path.join(__dirname, 'public');
 
-// Garantir que a diretoria de dados e o ficheiro existem
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
@@ -123,7 +121,6 @@ function readInventory() {
     const raw = fs.readFileSync(DATA_FILE, 'utf-8');
     return JSON.parse(raw);
   } catch (err) {
-    console.error('Erro ao ler base de dados:', err);
     return [];
   }
 }
@@ -133,12 +130,10 @@ function writeInventory(items) {
     fs.writeFileSync(DATA_FILE, JSON.stringify(items, null, 2), 'utf-8');
     return true;
   } catch (err) {
-    console.error('Erro ao gravar base de dados:', err);
     return false;
   }
 }
 
-// Helpers para respostas HTTP
 function sendJson(res, statusCode, data) {
   res.writeHead(statusCode, {
     'Content-Type': 'application/json; charset=utf-8',
@@ -154,7 +149,7 @@ function parseBody(req) {
     let body = '';
     req.on('data', chunk => {
       body += chunk;
-      if (body.length > 5 * 1024 * 1024) { // Limite de 5MB
+      if (body.length > 5 * 1024 * 1024) {
         reject(new Error('Payload demasiado grande'));
       }
     });
@@ -186,22 +181,20 @@ function serveStatic(req, res, pathname) {
   let relativePath = pathname === '/' ? 'index.html' : pathname;
   let filePath = path.join(PUBLIC_DIR, relativePath);
 
-  // Prevenir Directory Traversal
   if (!filePath.startsWith(PUBLIC_DIR)) {
     res.writeHead(403);
-    return res.end('Acesso proibido');
+    return res.end();
   }
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
-      // Fallback para index.html (SPA)
       const indexPath = path.join(PUBLIC_DIR, 'index.html');
       if (fs.existsSync(indexPath)) {
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
         return fs.createReadStream(indexPath).pipe(res);
       }
       res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-      return res.end('Ficheiro não encontrado');
+      return res.end();
     }
 
     const ext = path.extname(filePath).toLowerCase();
@@ -211,12 +204,10 @@ function serveStatic(req, res, pathname) {
   });
 }
 
-// Servidor HTTP Principal
 const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const { pathname, query } = parsedUrl;
 
-  // Tratar requisições OPTIONS (CORS)
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
       'Access-Control-Allow-Origin': '*',
@@ -226,14 +217,11 @@ const server = http.createServer(async (req, res) => {
     return res.end();
   }
 
-  // ================= API ENDPOINTS =================
   if (pathname.startsWith('/api/')) {
     try {
-      // GET /api/products
       if (pathname === '/api/products' && req.method === 'GET') {
         let items = readInventory();
 
-        // Filtro por texto (pesquisa por nome, SKU, fornecedor ou descrição)
         if (query.search) {
           const s = query.search.toLowerCase().trim();
           items = items.filter(i =>
@@ -244,12 +232,10 @@ const server = http.createServer(async (req, res) => {
           );
         }
 
-        // Filtro por categoria
         if (query.category && query.category !== 'all') {
           items = items.filter(i => i.category === query.category);
         }
 
-        // Filtro por estado de stock
         if (query.status) {
           if (query.status === 'outOfStock') {
             items = items.filter(i => Number(i.quantity) === 0);
@@ -260,7 +246,6 @@ const server = http.createServer(async (req, res) => {
           }
         }
 
-        // Ordenação
         const sortBy = query.sortBy || 'name';
         const sortOrder = query.sortOrder === 'desc' ? -1 : 1;
 
@@ -280,7 +265,6 @@ const server = http.createServer(async (req, res) => {
         return sendJson(res, 200, { success: true, count: items.length, data: items });
       }
 
-      // GET /api/stats
       if (pathname === '/api/stats' && req.method === 'GET') {
         const items = readInventory();
         let totalQuantity = 0;
@@ -320,20 +304,18 @@ const server = http.createServer(async (req, res) => {
         });
       }
 
-      // POST /api/products (Adicionar)
       if (pathname === '/api/products' && req.method === 'POST') {
         const body = await parseBody(req);
 
         if (!body.name || !body.name.trim()) {
-          return sendJson(res, 400, { success: false, message: 'O nome do produto é obrigatório.' });
+          return sendJson(res, 400, { success: false, message: 'Nome obrigatório' });
         }
 
         const items = readInventory();
         const sku = (body.sku && body.sku.trim()) || `SKU-${Date.now().toString().slice(-6)}`;
 
-        // Verificar se SKU já existe
         if (items.some(i => i.sku.toLowerCase() === sku.toLowerCase())) {
-          return sendJson(res, 400, { success: false, message: `O código SKU "${sku}" já se encontra registado.` });
+          return sendJson(res, 400, { success: false, message: 'SKU duplicado' });
         }
 
         const newItem = {
@@ -352,10 +334,9 @@ const server = http.createServer(async (req, res) => {
         items.unshift(newItem);
         writeInventory(items);
 
-        return sendJson(res, 201, { success: true, message: 'Produto adicionado com sucesso!', data: newItem });
+        return sendJson(res, 201, { success: true, data: newItem });
       }
 
-      // PUT /api/products/:id (Editar)
       const updateMatch = pathname.match(/^\/api\/products\/([^\/]+)$/);
       if (updateMatch && req.method === 'PUT') {
         const id = updateMatch[1];
@@ -364,14 +345,13 @@ const server = http.createServer(async (req, res) => {
         const index = items.findIndex(i => i.id === id);
 
         if (index === -1) {
-          return sendJson(res, 404, { success: false, message: 'Produto não encontrado.' });
+          return sendJson(res, 404, { success: false });
         }
 
-        // Se alterou o SKU, verificar se outro produto já o usa
         if (body.sku) {
           const duplicate = items.find(i => i.id !== id && i.sku.toLowerCase() === body.sku.trim().toLowerCase());
           if (duplicate) {
-            return sendJson(res, 400, { success: false, message: `O SKU "${body.sku}" já pertence a outro produto.` });
+            return sendJson(res, 400, { success: false, message: 'SKU duplicado' });
           }
         }
 
@@ -392,10 +372,9 @@ const server = http.createServer(async (req, res) => {
         items[index] = updated;
         writeInventory(items);
 
-        return sendJson(res, 200, { success: true, message: 'Produto atualizado com sucesso!', data: updated });
+        return sendJson(res, 200, { success: true, data: updated });
       }
 
-      // DELETE /api/products/:id (Eliminar)
       const deleteMatch = pathname.match(/^\/api\/products\/([^\/]+)$/);
       if (deleteMatch && req.method === 'DELETE') {
         const id = deleteMatch[1];
@@ -404,14 +383,13 @@ const server = http.createServer(async (req, res) => {
         items = items.filter(i => i.id !== id);
 
         if (items.length === beforeCount) {
-          return sendJson(res, 404, { success: false, message: 'Produto não encontrado para eliminar.' });
+          return sendJson(res, 404, { success: false });
         }
 
         writeInventory(items);
-        return sendJson(res, 200, { success: true, message: 'Produto eliminado com sucesso!' });
+        return sendJson(res, 200, { success: true });
       }
 
-      // POST /api/products/:id/adjust (Ajuste rápido de stock +1 / -1)
       const adjustMatch = pathname.match(/^\/api\/products\/([^\/]+)\/adjust$/);
       if (adjustMatch && req.method === 'POST') {
         const id = adjustMatch[1];
@@ -421,34 +399,30 @@ const server = http.createServer(async (req, res) => {
         const item = items.find(i => i.id === id);
 
         if (!item) {
-          return sendJson(res, 404, { success: false, message: 'Produto não encontrado.' });
+          return sendJson(res, 404, { success: false });
         }
 
         item.quantity = Math.max(0, item.quantity + delta);
         item.updatedAt = new Date().toISOString();
         writeInventory(items);
 
-        return sendJson(res, 200, { success: true, message: 'Stock ajustado!', data: item });
+        return sendJson(res, 200, { success: true, data: item });
       }
 
-      // POST /api/reset (Restaurar dados de exemplo)
       if (pathname === '/api/reset' && req.method === 'POST') {
         writeInventory(DEFAULT_ITEMS);
-        return sendJson(res, 200, { success: true, message: 'Inventário restaurado com produtos de exemplo.', data: DEFAULT_ITEMS });
+        return sendJson(res, 200, { success: true, data: DEFAULT_ITEMS });
       }
 
-      return sendJson(res, 404, { success: false, message: 'Endpoint da API desconhecido.' });
+      return sendJson(res, 404, { success: false });
     } catch (err) {
-      console.error('Erro na API:', err);
-      return sendJson(res, 500, { success: false, message: err.message || 'Erro interno no servidor.' });
+      return sendJson(res, 500, { success: false });
     }
   }
 
-  // Servir frontend estático
   serveStatic(req, res, pathname);
 });
 
 server.listen(PORT, () => {
-  console.log(`Servidor ativo em http://localhost:${PORT}`);
+  console.log(`http://localhost:${PORT}`);
 });
-

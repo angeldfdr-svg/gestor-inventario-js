@@ -1,9 +1,6 @@
-// Gestor de Inventário - Frontend
-
 (function () {
   'use strict';
 
-  // Estilos da interface
   function injectStyles() {
     const css = `
       :root {
@@ -50,18 +47,16 @@
         padding-bottom: 50px;
       }
 
-      /* Container Principal */
       .app-container {
         max-width: 1280px;
         margin: 0 auto;
         padding: 24px 20px;
       }
 
-      /* Header Superior */
       .header-card {
         background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
         color: var(--white);
-        padding: 28px 32px;
+        padding: 24px 32px;
         border-radius: var(--radius);
         box-shadow: var(--shadow-lg);
         display: flex;
@@ -70,48 +65,12 @@
         align-items: center;
         gap: 20px;
         margin-bottom: 24px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .header-card::after {
-        content: '';
-        position: absolute;
-        top: -40px;
-        right: -40px;
-        width: 180px;
-        height: 180px;
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 50%;
-        pointer-events: none;
       }
 
       .header-title-box h1 {
-        font-size: 26px;
-        font-weight: 800;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        letter-spacing: -0.5px;
-      }
-
-      .header-title-box p {
-        color: #c7d2fe;
-        font-size: 14px;
-        margin-top: 4px;
-      }
-
-      .header-badge {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(8px);
-        padding: 3px 10px;
-        border-radius: 20px;
-        font-size: 11px;
+        font-size: 24px;
         font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #e0e7ff;
+        letter-spacing: -0.5px;
       }
 
       .header-actions {
@@ -121,7 +80,6 @@
         flex-wrap: wrap;
       }
 
-      /* Cartões de Métricas / Estatísticas */
       .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -138,12 +96,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
-
-      .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
       }
 
       .stat-info .stat-label {
@@ -176,7 +128,6 @@
       .stat-icon.amber { background: #fef3c7; color: #d97706; }
       .stat-icon.red { background: #fee2e2; color: #dc2626; }
 
-      /* Barra de Ferramentas / Pesquisa e Filtros */
       .toolbar-card {
         background: var(--white);
         border: 1px solid var(--slate-200);
@@ -222,7 +173,6 @@
         border-radius: var(--radius-sm);
         font-size: 14px;
         outline: none;
-        transition: border-color 0.15s, box-shadow 0.15s;
         background: var(--slate-50);
       }
 
@@ -248,7 +198,6 @@
         background-color: var(--white);
         outline: none;
         cursor: pointer;
-        transition: border-color 0.15s;
       }
 
       .select-custom:focus {
@@ -256,7 +205,6 @@
         box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
       }
 
-      /* Filtro em Pills (Tags de Estado) */
       .status-pills {
         display: flex;
         align-items: center;
@@ -273,12 +221,6 @@
         border: 1px solid var(--slate-300);
         background: var(--white);
         color: var(--slate-600);
-        transition: all 0.15s ease;
-      }
-
-      .pill-btn:hover {
-        background: var(--slate-100);
-        color: var(--dark);
       }
 
       .pill-btn.active {
@@ -287,7 +229,6 @@
         border-color: var(--primary);
       }
 
-      /* Botões */
       .btn {
         display: inline-flex;
         align-items: center;
@@ -299,7 +240,6 @@
         border-radius: var(--radius-sm);
         cursor: pointer;
         border: none;
-        transition: all 0.15s ease;
         text-decoration: none;
         white-space: nowrap;
       }
@@ -307,13 +247,10 @@
       .btn-primary {
         background: var(--primary);
         color: var(--white);
-        box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
       }
 
       .btn-primary:hover {
         background: var(--primary-hover);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
       }
 
       .btn-secondary {
@@ -324,7 +261,6 @@
 
       .btn-secondary:hover {
         background: var(--slate-50);
-        border-color: var(--slate-400);
       }
 
       .btn-danger-outline {
@@ -337,7 +273,6 @@
 
       .btn-danger-outline:hover {
         background: var(--danger-light);
-        border-color: var(--danger);
       }
 
       .btn-edit-outline {
@@ -350,7 +285,6 @@
 
       .btn-edit-outline:hover {
         background: var(--primary-light);
-        border-color: var(--primary);
       }
 
       .btn-icon-step {
@@ -367,14 +301,8 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        transition: background 0.15s;
       }
 
-      .btn-icon-step:hover {
-        background: var(--slate-200);
-      }
-
-      /* Tabela de Produtos */
       .table-card {
         background: var(--white);
         border: 1px solid var(--slate-200);
@@ -418,7 +346,6 @@
         background-color: #f8fafc;
       }
 
-      /* Badges e Pílulas na Tabela */
       .badge-sku {
         font-family: monospace;
         font-size: 12px;
@@ -480,7 +407,6 @@
         color: var(--slate-500);
       }
 
-      /* Visualização em Cartões (Grid View) */
       .items-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -498,12 +424,6 @@
         justify-content: space-between;
         gap: 12px;
         box-shadow: var(--shadow-sm);
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
-
-      .item-grid-card:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
       }
 
       .item-grid-header {
@@ -520,30 +440,17 @@
         border-top: 1px solid var(--slate-100);
       }
 
-      /* Estado Vazio (Sem resultados) */
       .empty-state {
         text-align: center;
         padding: 60px 20px;
       }
 
-      .empty-state-icon {
-        font-size: 48px;
-        margin-bottom: 12px;
-      }
-
       .empty-state h3 {
         font-size: 18px;
         color: var(--dark);
-        margin-bottom: 6px;
+        margin-bottom: 16px;
       }
 
-      .empty-state p {
-        color: var(--slate-500);
-        font-size: 14px;
-        margin-bottom: 18px;
-      }
-
-      /* Rodapé da Tabela */
       .table-footer {
         padding: 14px 20px;
         background: var(--slate-50);
@@ -555,7 +462,6 @@
         color: var(--slate-600);
       }
 
-      /* Modal Dialog (Overlay & Form) */
       .modal-backdrop {
         position: fixed;
         top: 0;
@@ -586,15 +492,9 @@
         max-width: 560px;
         box-shadow: var(--shadow-xl);
         overflow: hidden;
-        transform: translateY(20px) scale(0.96);
-        transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         max-height: 90vh;
         display: flex;
         flex-direction: column;
-      }
-
-      .modal-backdrop.open .modal-content {
-        transform: translateY(0) scale(1);
       }
 
       .modal-header {
@@ -619,11 +519,6 @@
         color: var(--slate-400);
         padding: 4px;
         border-radius: 4px;
-        transition: color 0.15s;
-      }
-
-      .modal-close-btn:hover {
-        color: var(--dark);
       }
 
       .modal-body {
@@ -661,7 +556,6 @@
         color: var(--dark);
         background: var(--white);
         outline: none;
-        transition: border-color 0.15s, box-shadow 0.15s;
         font-family: inherit;
       }
 
@@ -689,7 +583,6 @@
         background: var(--slate-50);
       }
 
-      /* Toasts / Notificações Flutuantes */
       .toast-container {
         position: fixed;
         bottom: 24px;
@@ -709,24 +602,14 @@
         box-shadow: var(--shadow-lg);
         font-size: 14px;
         font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        animation: toastIn 0.25s ease forwards;
         pointer-events: auto;
       }
 
-      .toast.success { background: #065f46; border-left: 4px solid var(--success); }
-      .toast.error { background: #991b1b; border-left: 4px solid var(--danger); }
-      .toast.warning { background: #92400e; border-left: 4px solid var(--warning); }
-      .toast.info { background: #1e293b; border-left: 4px solid var(--secondary); }
+      .toast.success { background: #065f46; }
+      .toast.error { background: #991b1b; }
+      .toast.warning { background: #92400e; }
+      .toast.info { background: #1e293b; }
 
-      @keyframes toastIn {
-        from { opacity: 0; transform: translateY(12px) scale(0.95); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
-      }
-
-      /* Responsividade */
       @media (max-width: 768px) {
         .header-card {
           flex-direction: column;
@@ -754,7 +637,6 @@
     document.head.appendChild(styleEl);
   }
 
-  // Estado global da aplicação
   const state = {
     products: [],
     stats: {
@@ -768,14 +650,14 @@
     filters: {
       search: '',
       category: 'all',
-      status: 'all', // 'all' | 'inStock' | 'lowStock' | 'outOfStock'
-      sortBy: 'name', // 'name' | 'price' | 'quantity' | 'updatedAt'
-      sortOrder: 'asc' // 'asc' | 'desc'
+      status: 'all',
+      sortBy: 'name',
+      sortOrder: 'asc'
     },
-    viewMode: 'table', // 'table' | 'grid'
+    viewMode: 'table',
     modal: {
       isOpen: false,
-      mode: 'create', // 'create' | 'edit'
+      mode: 'create',
       currentId: null
     },
     deleteModal: {
@@ -786,7 +668,6 @@
     isApiAvailable: true
   };
 
-  // Comunicação com API e armazenamento local
   const STORAGE_KEY = 'gestor_inventario_local_db';
 
   async function apiRequest(endpoint, options = {}) {
@@ -800,17 +681,15 @@
       });
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.message || `Erro HTTP ${res.status}`);
+        throw new Error(errData.message || `HTTP ${res.status}`);
       }
       return await res.json();
     } catch (err) {
-      console.warn('API não disponível no endpoint, usando fallback de memória/localStorage:', err.message);
       state.isApiAvailable = false;
       return null;
     }
   }
 
-  // Fallback seguro em localStorage se o utilizador abrir o ficheiro diretamente
   function getLocalProducts() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -863,7 +742,6 @@
   }
 
   async function loadData() {
-    // Tenta primeiro a API Node.js nativa
     const queryParams = new URLSearchParams({
       search: state.filters.search,
       category: state.filters.category,
@@ -881,10 +759,8 @@
         state.stats = statsResponse.stats;
       }
     } else {
-      // Fallback LocalStorage
       let items = getLocalProducts();
       
-      // Filtros
       if (state.filters.search) {
         const s = state.filters.search.toLowerCase().trim();
         items = items.filter(i =>
@@ -904,7 +780,6 @@
         items = items.filter(i => Number(i.quantity) > Number(i.minStock || 5));
       }
 
-      // Ordenação
       items.sort((a, b) => {
         let valA = a[state.filters.sortBy];
         let valB = b[state.filters.sortBy];
@@ -917,7 +792,6 @@
 
       state.products = items;
 
-      // Calcular estatísticas locais
       const allLocal = getLocalProducts();
       let totalQty = 0, totalVal = 0, outStock = 0, lowStock = 0, cats = {};
       allLocal.forEach(it => {
@@ -951,16 +825,12 @@
         body: JSON.stringify(payload)
       });
       if (res && res.success) {
-        showToast('Produto adicionado com sucesso!', 'success');
+        showToast('Guardado', 'success');
         await loadData();
         return true;
-      } else if (res && !res.success) {
-        showToast(res.message || 'Erro ao adicionar produto', 'error');
-        return false;
       }
     }
 
-    // Fallback Local
     const items = getLocalProducts();
     const newItem = {
       id: `prod-${Date.now()}`,
@@ -969,7 +839,7 @@
     };
     items.unshift(newItem);
     saveLocalProducts(items);
-    showToast('Produto adicionado (modo offline)!', 'success');
+    showToast('Guardado', 'success');
     await loadData();
     return true;
   }
@@ -981,22 +851,18 @@
         body: JSON.stringify(payload)
       });
       if (res && res.success) {
-        showToast('Produto atualizado com sucesso!', 'success');
+        showToast('Atualizado', 'success');
         await loadData();
         return true;
-      } else if (res && !res.success) {
-        showToast(res.message || 'Erro ao atualizar produto', 'error');
-        return false;
       }
     }
 
-    // Fallback Local
     const items = getLocalProducts();
     const idx = items.findIndex(i => i.id === id);
     if (idx !== -1) {
       items[idx] = { ...items[idx], ...payload, updatedAt: new Date().toISOString() };
       saveLocalProducts(items);
-      showToast('Produto atualizado (modo offline)!', 'success');
+      showToast('Atualizado', 'success');
       await loadData();
       return true;
     }
@@ -1007,17 +873,16 @@
     if (state.isApiAvailable) {
       const res = await apiRequest(`/api/products/${id}`, { method: 'DELETE' });
       if (res && res.success) {
-        showToast('Produto eliminado com sucesso!', 'success');
+        showToast('Eliminado', 'success');
         await loadData();
         return true;
       }
     }
 
-    // Fallback Local
     let items = getLocalProducts();
     items = items.filter(i => i.id !== id);
     saveLocalProducts(items);
-    showToast('Produto eliminado (modo offline)!', 'success');
+    showToast('Eliminado', 'success');
     await loadData();
     return true;
   }
@@ -1038,7 +903,6 @@
       }
     }
 
-    // Fallback Local
     const items = getLocalProducts();
     const target = items.find(i => i.id === id);
     if (target) {
@@ -1050,23 +914,20 @@
   }
 
   async function resetSampleData() {
-    if (confirm('Tem a certeza que deseja repor os dados de exemplo no inventário?')) {
+    if (confirm('Restaurar dados?')) {
       if (state.isApiAvailable) {
         await apiRequest('/api/reset', { method: 'POST' });
       } else {
         localStorage.removeItem(STORAGE_KEY);
       }
-      showToast('Dados de exemplo restaurados!', 'info');
+      showToast('Restaurado', 'info');
       await loadData();
     }
   }
 
   function exportCSV() {
     const items = state.products;
-    if (items.length === 0) {
-      showToast('Não existem produtos para exportar.', 'warning');
-      return;
-    }
+    if (items.length === 0) return;
 
     const headers = ['ID', 'Nome', 'SKU', 'Categoria', 'Preco', 'Quantidade', 'StockMinimo', 'Fornecedor', 'Descricao', 'DataAtualizacao'];
     const rows = items.map(i => [
@@ -1090,10 +951,8 @@
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    showToast('Exportação CSV gerada com sucesso!', 'success');
   }
 
-  // Notificações toast
   let toastContainer = null;
   function showToast(message, type = 'info') {
     if (!toastContainer) {
@@ -1104,24 +963,14 @@
 
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
-
-    let icon = 'ℹ️';
-    if (type === 'success') icon = '✅';
-    if (type === 'error') icon = '❌';
-    if (type === 'warning') icon = '⚠️';
-
-    toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+    toast.textContent = message;
     toastContainer.appendChild(toast);
 
     setTimeout(() => {
-      toast.style.transition = 'opacity 0.3s, transform 0.3s';
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(10px)';
-      setTimeout(() => toast.remove(), 300);
-    }, 3500);
+      toast.remove();
+    }, 2500);
   }
 
-  // Interface e componentes de renderização
   const appRoot = document.getElementById('app');
 
   function renderApp() {
@@ -1130,24 +979,14 @@
     const container = document.createElement('div');
     container.className = 'app-container';
 
-    // 1. Header Card
     container.appendChild(createHeader());
-
-    // 2. Metrics Cards
     container.appendChild(createStatsGrid());
-
-    // 3. Toolbar (Pesquisa e Filtros)
     container.appendChild(createToolbar());
-
-    // 4. Lista ou Tabela de Produtos
     container.appendChild(createInventoryContent());
 
     appRoot.appendChild(container);
 
-    // 5. Modal de Adicionar / Editar
     renderProductModal();
-
-    // 6. Modal de Confirmação de Eliminar
     renderDeleteModal();
   }
 
@@ -1157,32 +996,24 @@
 
     const titleBox = document.createElement('div');
     titleBox.className = 'header-title-box';
-    titleBox.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
-        <span class="header-badge">v1.0</span>
-        ${state.isApiAvailable ? '<span class="header-badge" style="background:#059669; color:#fff;">Online</span>' : '<span class="header-badge" style="background:#d97706; color:#fff;">Offline</span>'}
-      </div>
-      <h1>Gestor de Inventário</h1>
-      <p>Gestão e controlo de stock em tempo real.</p>
-    `;
+    titleBox.innerHTML = `<h1>Gestor de Inventário</h1>`;
 
     const actions = document.createElement('div');
     actions.className = 'header-actions';
 
     const addBtn = document.createElement('button');
     addBtn.className = 'btn btn-primary';
-    addBtn.innerHTML = `<span>➕</span> Adicionar Produto`;
+    addBtn.textContent = 'Adicionar Produto';
     addBtn.onclick = () => openProductModal('create');
 
     const exportBtn = document.createElement('button');
     exportBtn.className = 'btn btn-secondary';
-    exportBtn.innerHTML = `<span>📥</span> Exportar CSV`;
+    exportBtn.textContent = 'Exportar CSV';
     exportBtn.onclick = exportCSV;
 
     const resetBtn = document.createElement('button');
     resetBtn.className = 'btn btn-secondary';
-    resetBtn.innerHTML = `<span>🔄</span> Repor Dados`;
-    resetBtn.title = 'Restaurar produtos padrão de exemplo';
+    resetBtn.textContent = 'Restaurar';
     resetBtn.onclick = resetSampleData;
 
     actions.appendChild(addBtn);
@@ -1202,36 +1033,11 @@
     const formatCurrency = val => new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(val || 0);
 
     const items = [
-      {
-        label: 'Total de Produtos',
-        value: stats.totalProducts,
-        icon: '🏷️',
-        colorClass: 'blue'
-      },
-      {
-        label: 'Unidades em Stock',
-        value: stats.totalQuantity,
-        icon: '📊',
-        colorClass: 'green'
-      },
-      {
-        label: 'Valor Total',
-        value: formatCurrency(stats.totalValue),
-        icon: '💶',
-        colorClass: 'blue'
-      },
-      {
-        label: 'Stock Baixo',
-        value: stats.lowStock,
-        icon: '⚠️',
-        colorClass: 'amber'
-      },
-      {
-        label: 'Esgotados',
-        value: stats.outOfStock,
-        icon: '🚫',
-        colorClass: 'red'
-      }
+      { label: 'Total de Produtos', value: stats.totalProducts, icon: '🏷️', colorClass: 'blue' },
+      { label: 'Unidades em Stock', value: stats.totalQuantity, icon: '📊', colorClass: 'green' },
+      { label: 'Valor Total', value: formatCurrency(stats.totalValue), icon: '💶', colorClass: 'blue' },
+      { label: 'Stock Baixo', value: stats.lowStock, icon: '⚠️', colorClass: 'amber' },
+      { label: 'Esgotados', value: stats.outOfStock, icon: '🚫', colorClass: 'red' }
     ];
 
     items.forEach(item => {
@@ -1254,16 +1060,14 @@
     const card = document.createElement('div');
     card.className = 'toolbar-card';
 
-    // Linha 1: Pesquisa e Filtro de Categoria
     const row1 = document.createElement('div');
     row1.className = 'toolbar-row';
 
-    // Barra de Pesquisa
     const searchBox = document.createElement('div');
     searchBox.className = 'search-box';
     searchBox.innerHTML = `
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" class="search-input" placeholder="Pesquisar por nome, SKU, fornecedor..." value="${state.filters.search}">
+      <input type="text" class="search-input" placeholder="Pesquisar..." value="${state.filters.search}">
     `;
     const searchInput = searchBox.querySelector('input');
     let debounceTimer;
@@ -1275,15 +1079,12 @@
       }, 250);
     };
 
-    // Filtros e Ordenação
     const filtersGroup = document.createElement('div');
     filtersGroup.className = 'filters-group';
 
-    // Dropdown de Categoria
     const catSelect = document.createElement('select');
     catSelect.className = 'select-custom';
     
-    // Obter todas as categorias existentes dinamicamente
     const categories = Object.keys(state.stats.categories || {});
     let catOptions = `<option value="all">Todas as Categorias</option>`;
     categories.forEach(cat => {
@@ -1296,17 +1097,16 @@
       loadData();
     };
 
-    // Dropdown de Ordenação
     const sortSelect = document.createElement('select');
     sortSelect.className = 'select-custom';
     const sortOptions = [
       { id: 'name_asc', label: 'Nome (A-Z)' },
       { id: 'name_desc', label: 'Nome (Z-A)' },
-      { id: 'price_asc', label: 'Preço: Menor para Maior' },
-      { id: 'price_desc', label: 'Preço: Maior para Menor' },
+      { id: 'price_asc', label: 'Preço: Menor' },
+      { id: 'price_desc', label: 'Preço: Maior' },
       { id: 'quantity_asc', label: 'Quantidade: Menor' },
       { id: 'quantity_desc', label: 'Quantidade: Maior' },
-      { id: 'updatedAt_desc', label: 'Mais Recentes' }
+      { id: 'updatedAt_desc', label: 'Recentes' }
     ];
     sortSelect.innerHTML = sortOptions.map(opt => {
       const current = `${state.filters.sortBy}_${state.filters.sortOrder}`;
@@ -1320,7 +1120,6 @@
       loadData();
     };
 
-    // Alternar Visualização (Tabela vs Grelha)
     const viewToggle = document.createElement('div');
     viewToggle.style.display = 'flex';
     viewToggle.style.border = '1px solid var(--slate-300)';
@@ -1334,7 +1133,7 @@
     tableBtn.style.fontSize = '12px';
     tableBtn.style.background = state.viewMode === 'table' ? 'var(--primary)' : 'var(--white)';
     tableBtn.style.color = state.viewMode === 'table' ? 'var(--white)' : 'var(--slate-800)';
-    tableBtn.innerHTML = '📋 Tabela';
+    tableBtn.textContent = 'Tabela';
     tableBtn.onclick = () => {
       state.viewMode = 'table';
       renderApp();
@@ -1347,7 +1146,7 @@
     gridBtn.style.fontSize = '12px';
     gridBtn.style.background = state.viewMode === 'grid' ? 'var(--primary)' : 'var(--white)';
     gridBtn.style.color = state.viewMode === 'grid' ? 'var(--white)' : 'var(--slate-800)';
-    gridBtn.innerHTML = '🔲 Grelha';
+    gridBtn.textContent = 'Grelha';
     gridBtn.onclick = () => {
       state.viewMode = 'grid';
       renderApp();
@@ -1363,7 +1162,6 @@
     row1.appendChild(searchBox);
     row1.appendChild(filtersGroup);
 
-    // Linha 2: Filtros de Estado de Stock em Pills
     const row2 = document.createElement('div');
     row2.className = 'toolbar-row';
 
@@ -1371,10 +1169,10 @@
     pillsContainer.className = 'status-pills';
 
     const statuses = [
-      { id: 'all', label: 'Todos os Estados' },
-      { id: 'inStock', label: '🟢 Em Stock Normal' },
-      { id: 'lowStock', label: `🟡 Stock Baixo (${state.stats.lowStock})` },
-      { id: 'outOfStock', label: `🔴 Esgotados (${state.stats.outOfStock})` }
+      { id: 'all', label: 'Todos' },
+      { id: 'inStock', label: 'Em Stock' },
+      { id: 'lowStock', label: `Stock Baixo (${state.stats.lowStock})` },
+      { id: 'outOfStock', label: `Esgotados (${state.stats.outOfStock})` }
     ];
 
     statuses.forEach(st => {
@@ -1402,10 +1200,8 @@
     if (state.products.length === 0) {
       card.innerHTML = `
         <div class="empty-state">
-          <div class="empty-state-icon">🔍</div>
-          <h3>Nenhum produto encontrado</h3>
-          <p>Tente ajustar os termos de pesquisa ou remover os filtros aplicados.</p>
-          <button class="btn btn-primary" id="btn-empty-add">➕ Adicionar Novo Produto</button>
+          <h3>Sem produtos</h3>
+          <button class="btn btn-primary" id="btn-empty-add">Adicionar Produto</button>
         </div>
       `;
       card.querySelector('#btn-empty-add').onclick = () => openProductModal('create');
@@ -1418,14 +1214,9 @@
       card.appendChild(createTableView());
     }
 
-    // Rodapé de resumo
     const footer = document.createElement('div');
     footer.className = 'table-footer';
-    const totalShown = state.products.length;
-    footer.innerHTML = `
-      <div>A mostrar <strong>${totalShown}</strong> de <strong>${state.stats.totalProducts}</strong> produtos registados</div>
-      <div>Atualizado automaticamente em tempo real</div>
-    `;
+    footer.innerHTML = `<div>Total: <strong>${state.products.length}</strong></div>`;
     card.appendChild(footer);
 
     return card;
@@ -1436,12 +1227,12 @@
     const min = Number(minStock);
 
     if (q === 0) {
-      return `<span class="badge-stock out-of-stock">● Esgotado</span>`;
+      return `<span class="badge-stock out-of-stock">Esgotado</span>`;
     }
     if (q <= min) {
-      return `<span class="badge-stock low-stock">▲ Baixo (${q} un)</span>`;
+      return `<span class="badge-stock low-stock">Baixo (${q})</span>`;
     }
-    return `<span class="badge-stock in-stock">✓ Em Stock (${q})</span>`;
+    return `<span class="badge-stock in-stock">Em Stock (${q})</span>`;
   }
 
   function createTableView() {
@@ -1457,9 +1248,9 @@
           <th>Produto</th>
           <th>SKU</th>
           <th>Categoria</th>
-          <th>Preço (€)</th>
+          <th>Preço</th>
           <th>Quantidade</th>
-          <th>Valor Total</th>
+          <th>Total</th>
           <th>Estado</th>
           <th style="text-align: right;">Ações</th>
         </tr>
@@ -1477,29 +1268,28 @@
       tr.innerHTML = `
         <td>
           <div class="product-title">${escapeHtml(item.name)}</div>
-          ${item.supplier ? `<div class="product-supplier">Fornecedor: ${escapeHtml(item.supplier)}</div>` : ''}
+          ${item.supplier ? `<div class="product-supplier">${escapeHtml(item.supplier)}</div>` : ''}
         </td>
-        <td><span class="badge-sku">${escapeHtml(item.sku || 'N/A')}</span></td>
-        <td><span class="badge-cat">${escapeHtml(item.category || 'Geral')}</span></td>
+        <td><span class="badge-sku">${escapeHtml(item.sku || '')}</span></td>
+        <td><span class="badge-cat">${escapeHtml(item.category || '')}</span></td>
         <td><strong>${formatCurrency(item.price)}</strong></td>
         <td>
           <div class="stock-stepper">
-            <button class="btn-icon-step" data-action="decrease" title="Diminuir stock">-</button>
+            <button class="btn-icon-step" data-action="decrease">-</button>
             <span style="font-weight: 700; min-width: 28px; text-align: center;">${item.quantity}</span>
-            <button class="btn-icon-step" data-action="increase" title="Aumentar stock">+</button>
+            <button class="btn-icon-step" data-action="increase">+</button>
           </div>
         </td>
         <td>${formatCurrency(totalItemValue)}</td>
         <td>${getStockStatusBadge(item.quantity, item.minStock)}</td>
         <td style="text-align: right;">
           <div style="display: inline-flex; gap: 8px;">
-            <button class="btn btn-edit-outline" data-action="edit">✏️ Editar</button>
-            <button class="btn btn-danger-outline" data-action="delete">🗑️ Eliminar</button>
+            <button class="btn btn-edit-outline" data-action="edit">Editar</button>
+            <button class="btn btn-danger-outline" data-action="delete">Eliminar</button>
           </div>
         </td>
       `;
 
-      // Eventos dos botões de ação rápida e edição/eliminação
       tr.querySelector('[data-action="decrease"]').onclick = () => adjustStock(item.id, -1);
       tr.querySelector('[data-action="increase"]').onclick = () => adjustStock(item.id, 1);
       tr.querySelector('[data-action="edit"]').onclick = () => openProductModal('edit', item);
@@ -1521,27 +1311,25 @@
       const card = document.createElement('div');
       card.className = 'item-grid-card';
 
-      const totalItemValue = (Number(item.price) || 0) * (Number(item.quantity) || 0);
-
       card.innerHTML = `
         <div>
           <div class="item-grid-header">
-            <span class="badge-cat">${escapeHtml(item.category || 'Geral')}</span>
+            <span class="badge-cat">${escapeHtml(item.category || '')}</span>
             <span class="badge-sku">${escapeHtml(item.sku)}</span>
           </div>
           <h4 style="font-size: 16px; font-weight: 700; margin: 10px 0 4px; color: var(--dark);">${escapeHtml(item.name)}</h4>
           <p style="font-size: 13px; color: var(--slate-500); min-height: 38px; line-height: 1.4;">
-            ${escapeHtml(item.description || 'Sem descrição registada.')}
+            ${escapeHtml(item.description || '')}
           </p>
         </div>
 
         <div style="background: var(--slate-50); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--slate-200); margin: 6px 0;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span style="font-size: 12px; color: var(--slate-500);">Preço Unitário:</span>
+            <span style="font-size: 12px; color: var(--slate-500);">Preço:</span>
             <strong style="font-size: 15px; color: var(--dark);">${formatCurrency(item.price)}</strong>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span style="font-size: 12px; color: var(--slate-500);">Stock Atual:</span>
+            <span style="font-size: 12px; color: var(--slate-500);">Stock:</span>
             <div class="stock-stepper">
               <button class="btn-icon-step" data-action="decrease">-</button>
               <strong style="min-width: 24px; text-align: center;">${item.quantity}</strong>
@@ -1555,8 +1343,8 @@
         </div>
 
         <div class="item-grid-actions">
-          <button class="btn btn-edit-outline" style="flex: 1;" data-action="edit">✏️ Editar</button>
-          <button class="btn btn-danger-outline" style="flex: 1;" data-action="delete">🗑️ Eliminar</button>
+          <button class="btn btn-edit-outline" style="flex: 1;" data-action="edit">Editar</button>
+          <button class="btn btn-danger-outline" style="flex: 1;" data-action="delete">Eliminar</button>
         </div>
       `;
 
@@ -1571,7 +1359,6 @@
     return grid;
   }
 
-  // Modal de criação / edição de produto
   let modalBackdrop = null;
 
   function renderProductModal() {
@@ -1587,7 +1374,7 @@
     modalBackdrop.innerHTML = `
       <div class="modal-content">
         <div class="modal-header">
-          <h3>${isEdit ? '✏️ Editar Produto' : '➕ Adicionar Novo Produto'}</h3>
+          <h3>${isEdit ? 'Editar Produto' : 'Novo Produto'}</h3>
           <button class="modal-close-btn" id="modal-close">&times;</button>
         </div>
         <form id="product-form">
@@ -1595,63 +1382,59 @@
             <div class="form-grid">
               
               <div class="form-group full-width">
-                <label class="form-label">Nome do Produto *</label>
-                <input type="text" class="form-input" id="form-name" required placeholder="Ex: Monitor UltraWide 29&quot;" value="${currentItem ? escapeHtml(currentItem.name) : ''}">
+                <label class="form-label">Nome *</label>
+                <input type="text" class="form-input" id="form-name" required value="${currentItem ? escapeHtml(currentItem.name) : ''}">
               </div>
 
               <div class="form-group">
-                <label class="form-label">Código SKU *</label>
+                <label class="form-label">SKU *</label>
                 <div class="input-with-action">
-                  <input type="text" class="form-input" id="form-sku" required placeholder="Ex: TECH-001" value="${currentItem ? escapeHtml(currentItem.sku) : ''}">
-                  <button type="button" class="btn btn-secondary" id="btn-gen-sku" title="Gerar código SKU automático" style="padding: 0 10px; font-size: 12px;">Gerar</button>
+                  <input type="text" class="form-input" id="form-sku" required value="${currentItem ? escapeHtml(currentItem.sku) : ''}">
+                  <button type="button" class="btn btn-secondary" id="btn-gen-sku" style="padding: 0 10px; font-size: 12px;">Gerar</button>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="form-label">Categoria *</label>
-                <input type="text" class="form-input" id="form-category" required list="categories-list" placeholder="Ex: Informática, Áudio..." value="${currentItem ? escapeHtml(currentItem.category) : ''}">
+                <input type="text" class="form-input" id="form-category" required list="categories-list" value="${currentItem ? escapeHtml(currentItem.category) : ''}">
                 <datalist id="categories-list">
                   <option value="Informática">
                   <option value="Acessórios">
                   <option value="Áudio">
                   <option value="Mobiliário">
-                  <option value="Escritório">
-                  <option value="Eletrónica">
                 </datalist>
               </div>
 
               <div class="form-group">
-                <label class="form-label">Preço Unitário (€) *</label>
-                <input type="number" step="0.01" min="0" class="form-input" id="form-price" required placeholder="0.00" value="${currentItem ? currentItem.price : ''}">
+                <label class="form-label">Preço (€) *</label>
+                <input type="number" step="0.01" min="0" class="form-input" id="form-price" required value="${currentItem ? currentItem.price : ''}">
               </div>
 
               <div class="form-group">
-                <label class="form-label">Quantidade em Stock *</label>
-                <input type="number" min="0" step="1" class="form-input" id="form-quantity" required placeholder="0" value="${currentItem !== null && currentItem !== undefined ? currentItem.quantity : '1'}">
+                <label class="form-label">Quantidade *</label>
+                <input type="number" min="0" step="1" class="form-input" id="form-quantity" required value="${currentItem !== null && currentItem !== undefined ? currentItem.quantity : '1'}">
               </div>
 
               <div class="form-group">
-                <label class="form-label">Alerta Stock Mínimo</label>
-                <input type="number" min="0" step="1" class="form-input" id="form-min-stock" placeholder="5" value="${currentItem ? currentItem.minStock : '5'}">
+                <label class="form-label">Stock Mínimo</label>
+                <input type="number" min="0" step="1" class="form-input" id="form-min-stock" value="${currentItem ? currentItem.minStock : '5'}">
               </div>
 
               <div class="form-group">
                 <label class="form-label">Fornecedor</label>
-                <input type="text" class="form-input" id="form-supplier" placeholder="Ex: Distribuidora Central" value="${currentItem ? escapeHtml(currentItem.supplier || '') : ''}">
+                <input type="text" class="form-input" id="form-supplier" value="${currentItem ? escapeHtml(currentItem.supplier || '') : ''}">
               </div>
 
               <div class="form-group full-width">
-                <label class="form-label">Descrição / Observações</label>
-                <textarea class="form-textarea" id="form-description" placeholder="Detalhes técnicos, localização no armazém...">${currentItem ? escapeHtml(currentItem.description || '') : ''}</textarea>
+                <label class="form-label">Descrição</label>
+                <textarea class="form-textarea" id="form-description">${currentItem ? escapeHtml(currentItem.description || '') : ''}</textarea>
               </div>
 
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" id="btn-cancel">Cancelar</button>
-            <button type="submit" class="btn btn-primary" id="btn-save">
-              ${isEdit ? 'Guardar Alterações' : 'Adicionar ao Inventário'}
-            </button>
+            <button type="submit" class="btn btn-primary" id="btn-save">Guardar</button>
           </div>
         </form>
       </div>
@@ -1659,7 +1442,6 @@
 
     document.body.appendChild(modalBackdrop);
 
-    // Eventos do Modal
     modalBackdrop.querySelector('#modal-close').onclick = closeProductModal;
     modalBackdrop.querySelector('#btn-cancel').onclick = closeProductModal;
 
@@ -1688,10 +1470,7 @@
         description: modalBackdrop.querySelector('#form-description').value.trim()
       };
 
-      if (!payload.name) {
-        showToast('O nome do produto é obrigatório.', 'error');
-        return;
-      }
+      if (!payload.name) return;
 
       let success = false;
       if (state.modal.mode === 'edit') {
@@ -1722,7 +1501,6 @@
     }
   }
 
-  // Modal de eliminação
   let deleteModalBackdrop = null;
 
   function renderDeleteModal() {
@@ -1733,23 +1511,20 @@
     deleteModalBackdrop.id = 'delete-modal';
 
     deleteModalBackdrop.innerHTML = `
-      <div class="modal-content" style="max-width: 440px;">
+      <div class="modal-content" style="max-width: 400px;">
         <div class="modal-header">
-          <h3 style="color: var(--danger);">🗑️ Eliminar Produto</h3>
+          <h3 style="color: var(--danger);">Eliminar Produto</h3>
           <button class="modal-close-btn" id="del-modal-close">&times;</button>
         </div>
         <div class="modal-body" style="padding: 20px 24px;">
-          <p style="font-size: 15px; color: var(--dark); margin-bottom: 8px;">
-            Tem a certeza de que deseja eliminar o produto <strong id="del-product-name"></strong>?
-          </p>
-          <p style="font-size: 13px; color: var(--slate-500);">
-            Esta ação é irreversível e o item será removido permanentemente do inventário.
+          <p style="font-size: 15px; color: var(--dark);">
+            Eliminar <strong id="del-product-name"></strong>?
           </p>
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" id="btn-cancel-del">Cancelar</button>
           <button class="btn" id="btn-confirm-del" style="background: var(--danger); color: var(--white);">
-            Eliminar Definitivamente
+            Eliminar
           </button>
         </div>
       </div>
@@ -1787,7 +1562,6 @@
     }
   }
 
-  // Helper de sanitização de HTML
   function escapeHtml(str) {
     if (!str) return '';
     return String(str)
@@ -1798,7 +1572,6 @@
       .replace(/'/g, '&#039;');
   }
 
-  // Inicialização
   function init() {
     injectStyles();
     loadData();
@@ -1810,4 +1583,3 @@
     init();
   }
 })();
-
