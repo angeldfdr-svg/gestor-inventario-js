@@ -1,9 +1,12 @@
 {
   "name": "gestor-inventario",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "main.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node launcher.js",
+    "server": "node server.js",
+    "app": "node launcher.js",
+    "electron": "electron ."
   },
   "author": "angeldfdr-svg",
   "license": "MIT"
