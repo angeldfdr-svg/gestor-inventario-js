@@ -1,13 +1,17 @@
 {
   "name": "gestor-inventario",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "Gestor de Inventário TI - Aplicação Desktop",
   "main": "main.js",
+  "author": "Gestor TI",
+  "license": "MIT",
   "scripts": {
-    "start": "node launcher.js",
-    "server": "node server.js",
+    "start": "electron .",
+    "dev": "electron . --dev",
     "app": "node launcher.js",
-    "electron": "electron ."
+    "server": "node server.js"
   },
-  "author": "angeldfdr-svg",
-  "license": "MIT"
+  "devDependencies": {
+    "electron": "^31.7.7"
+  }
 }

@@ -1,4 +1,11 @@
+# Dependências
 node_modules/
+
+# Ficheiros de sistema e temporários
 .DS_Store
 Thumbs.db
-
+.port
+data/app_profile/
+data/profile/
+dist/
+*.log

@@ -1,1569 +1,147 @@
 (function () {
   'use strict';
 
-  function injectStyles() {
-    const css = `
-      :root {
-        --primary: #4f46e5;
-        --primary-hover: #4338ca;
-        --primary-light: #eef2ff;
-        --secondary: #0ea5e9;
-        --success: #10b981;
-        --success-light: #ecfdf5;
-        --warning: #f59e0b;
-        --warning-light: #fffbeb;
-        --danger: #ef4444;
-        --danger-light: #fef2f2;
-        --dark: #0f172a;
-        --slate-800: #1e293b;
-        --slate-600: #475569;
-        --slate-500: #64748b;
-        --slate-300: #cbd5e1;
-        --slate-200: #e2e8f0;
-        --slate-100: #f1f5f9;
-        --slate-50: #f8fafc;
-        --white: #ffffff;
-        --radius: 12px;
-        --radius-sm: 8px;
-        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        font-family: var(--font-sans);
-        background: #f1f5f9;
-        color: var(--slate-800);
-        line-height: 1.5;
-        -webkit-font-smoothing: antialiased;
-        padding-bottom: 50px;
-      }
-
-      .app-container {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 24px 20px;
-      }
-
-      .header-card {
-        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
-        color: var(--white);
-        padding: 24px 32px;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-lg);
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-        margin-bottom: 24px;
-      }
-
-      .header-title-box h1 {
-        font-size: 24px;
-        font-weight: 700;
-        letter-spacing: -0.5px;
-      }
-
-      .header-actions {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 16px;
-        margin-bottom: 24px;
-      }
-
-      .stat-card {
-        background: var(--white);
-        border: 1px solid var(--slate-200);
-        padding: 18px 20px;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-sm);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .stat-info .stat-label {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--slate-500);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-
-      .stat-info .stat-value {
-        font-size: 24px;
-        font-weight: 800;
-        color: var(--dark);
-        margin-top: 4px;
-      }
-
-      .stat-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-      }
-
-      .stat-icon.blue { background: #e0f2fe; color: #0284c7; }
-      .stat-icon.green { background: #dcfce7; color: #16a34a; }
-      .stat-icon.amber { background: #fef3c7; color: #d97706; }
-      .stat-icon.red { background: #fee2e2; color: #dc2626; }
-
-      .toolbar-card {
-        background: var(--white);
-        border: 1px solid var(--slate-200);
-        padding: 18px 20px;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-sm);
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      .toolbar-row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-      }
-
-      .search-box {
-        position: relative;
-        flex: 1 1 320px;
-      }
-
-      .search-box svg {
-        position: absolute;
-        left: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 18px;
-        height: 18px;
-        fill: none;
-        stroke: var(--slate-400, #94a3b8);
-        stroke-width: 2;
-        pointer-events: none;
-      }
-
-      .search-input {
-        width: 100%;
-        padding: 10px 14px 10px 42px;
-        border: 1px solid var(--slate-300);
-        border-radius: var(--radius-sm);
-        font-size: 14px;
-        outline: none;
-        background: var(--slate-50);
-      }
-
-      .search-input:focus {
-        border-color: var(--primary);
-        background: var(--white);
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-      }
-
-      .filters-group {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      .select-custom {
-        padding: 10px 14px;
-        border: 1px solid var(--slate-300);
-        border-radius: var(--radius-sm);
-        font-size: 14px;
-        color: var(--slate-800);
-        background-color: var(--white);
-        outline: none;
-        cursor: pointer;
-      }
-
-      .select-custom:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-      }
-
-      .status-pills {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-
-      .pill-btn {
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        border: 1px solid var(--slate-300);
-        background: var(--white);
-        color: var(--slate-600);
-      }
-
-      .pill-btn.active {
-        background: var(--primary);
-        color: var(--white);
-        border-color: var(--primary);
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 10px 16px;
-        font-size: 14px;
-        font-weight: 600;
-        border-radius: var(--radius-sm);
-        cursor: pointer;
-        border: none;
-        text-decoration: none;
-        white-space: nowrap;
-      }
-
-      .btn-primary {
-        background: var(--primary);
-        color: var(--white);
-      }
-
-      .btn-primary:hover {
-        background: var(--primary-hover);
-      }
-
-      .btn-secondary {
-        background: var(--white);
-        color: var(--slate-800);
-        border: 1px solid var(--slate-300);
-      }
-
-      .btn-secondary:hover {
-        background: var(--slate-50);
-      }
-
-      .btn-danger-outline {
-        background: transparent;
-        color: var(--danger);
-        border: 1px solid #fca5a5;
-        padding: 6px 10px;
-        font-size: 13px;
-      }
-
-      .btn-danger-outline:hover {
-        background: var(--danger-light);
-      }
-
-      .btn-edit-outline {
-        background: transparent;
-        color: var(--primary);
-        border: 1px solid #c7d2fe;
-        padding: 6px 10px;
-        font-size: 13px;
-      }
-
-      .btn-edit-outline:hover {
-        background: var(--primary-light);
-      }
-
-      .btn-icon-step {
-        width: 24px;
-        height: 24px;
-        padding: 0;
-        border-radius: 4px;
-        font-size: 13px;
-        font-weight: bold;
-        border: 1px solid var(--slate-300);
-        background: var(--white);
-        color: var(--slate-800);
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .table-card {
-        background: var(--white);
-        border: 1px solid var(--slate-200);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-sm);
-        overflow: hidden;
-      }
-
-      .table-responsive {
-        width: 100%;
-        overflow-x: auto;
-      }
-
-      table.inventory-table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: left;
-        font-size: 14px;
-      }
-
-      table.inventory-table th {
-        background: var(--slate-50);
-        color: var(--slate-600);
-        font-weight: 700;
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.6px;
-        padding: 14px 18px;
-        border-bottom: 1px solid var(--slate-200);
-        user-select: none;
-      }
-
-      table.inventory-table td {
-        padding: 14px 18px;
-        border-bottom: 1px solid var(--slate-200);
-        color: var(--slate-800);
-        vertical-align: middle;
-      }
-
-      table.inventory-table tr:hover td {
-        background-color: #f8fafc;
-      }
-
-      .badge-sku {
-        font-family: monospace;
-        font-size: 12px;
-        background: var(--slate-100);
-        color: var(--slate-800);
-        padding: 3px 6px;
-        border-radius: 4px;
-        border: 1px solid var(--slate-200);
-        font-weight: 600;
-      }
-
-      .badge-cat {
-        font-size: 11px;
-        font-weight: 600;
-        background: #e0e7ff;
-        color: #3730a3;
-        padding: 3px 8px;
-        border-radius: 12px;
-      }
-
-      .badge-stock {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .badge-stock.in-stock {
-        background: var(--success-light);
-        color: #065f46;
-      }
-
-      .badge-stock.low-stock {
-        background: var(--warning-light);
-        color: #92400e;
-      }
-
-      .badge-stock.out-of-stock {
-        background: var(--danger-light);
-        color: #991b1b;
-      }
-
-      .stock-stepper {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .product-title {
-        font-weight: 600;
-        color: var(--dark);
-      }
-
-      .product-supplier {
-        font-size: 12px;
-        color: var(--slate-500);
-      }
-
-      .items-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-        gap: 18px;
-        padding: 20px;
-      }
-
-      .item-grid-card {
-        background: var(--white);
-        border: 1px solid var(--slate-200);
-        border-radius: var(--radius);
-        padding: 18px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 12px;
-        box-shadow: var(--shadow-sm);
-      }
-
-      .item-grid-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-      }
-
-      .item-grid-actions {
-        display: flex;
-        gap: 8px;
-        margin-top: 10px;
-        padding-top: 12px;
-        border-top: 1px solid var(--slate-100);
-      }
-
-      .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-      }
-
-      .empty-state h3 {
-        font-size: 18px;
-        color: var(--dark);
-        margin-bottom: 16px;
-      }
-
-      .table-footer {
-        padding: 14px 20px;
-        background: var(--slate-50);
-        border-top: 1px solid var(--slate-200);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 13px;
-        color: var(--slate-600);
-      }
-
-      .modal-backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(4px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        padding: 20px;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.2s ease, visibility 0.2s ease;
-      }
-
-      .modal-backdrop.open {
-        opacity: 1;
-        visibility: visible;
-      }
-
-      .modal-content {
-        background: var(--white);
-        border-radius: var(--radius);
-        width: 100%;
-        max-width: 560px;
-        box-shadow: var(--shadow-xl);
-        overflow: hidden;
-        max-height: 90vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .modal-header {
-        padding: 18px 24px;
-        border-bottom: 1px solid var(--slate-200);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .modal-header h3 {
-        font-size: 18px;
-        font-weight: 700;
-        color: var(--dark);
-      }
-
-      .modal-close-btn {
-        background: none;
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-        color: var(--slate-400);
-        padding: 4px;
-        border-radius: 4px;
-      }
-
-      .modal-body {
-        padding: 24px;
-        overflow-y: auto;
-      }
-
-      .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-      }
-
-      .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-
-      .form-group.full-width {
-        grid-column: span 2;
-      }
-
-      .form-label {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--slate-800);
-      }
-
-      .form-input, .form-textarea, .form-select {
-        padding: 10px 12px;
-        border: 1px solid var(--slate-300);
-        border-radius: var(--radius-sm);
-        font-size: 14px;
-        color: var(--dark);
-        background: var(--white);
-        outline: none;
-        font-family: inherit;
-      }
-
-      .form-input:focus, .form-textarea:focus, .form-select:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-      }
-
-      .form-textarea {
-        resize: vertical;
-        min-height: 80px;
-      }
-
-      .input-with-action {
-        display: flex;
-        gap: 8px;
-      }
-
-      .modal-footer {
-        padding: 16px 24px;
-        border-top: 1px solid var(--slate-200);
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        background: var(--slate-50);
-      }
-
-      .toast-container {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        z-index: 10000;
-        pointer-events: none;
-      }
-
-      .toast {
-        background: var(--dark);
-        color: var(--white);
-        padding: 12px 18px;
-        border-radius: var(--radius-sm);
-        box-shadow: var(--shadow-lg);
-        font-size: 14px;
-        font-weight: 500;
-        pointer-events: auto;
-      }
-
-      .toast.success { background: #065f46; }
-      .toast.error { background: #991b1b; }
-      .toast.warning { background: #92400e; }
-      .toast.info { background: #1e293b; }
-
-      @media (max-width: 768px) {
-        .header-card {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        .header-actions {
-          width: 100%;
-          justify-content: flex-start;
-        }
-        .form-grid {
-          grid-template-columns: 1fr;
-        }
-        .form-group.full-width {
-          grid-column: span 1;
-        }
-        .toolbar-row {
-          flex-direction: column;
-          align-items: stretch;
-        }
-      }
-    `;
-
-    const styleEl = document.createElement('style');
-    styleEl.textContent = css;
-    document.head.appendChild(styleEl);
-  }
-
+  // ==========================================================
+  // ESTADO GLOBAL DA APLICAÇÃO
+  // ==========================================================
   const state = {
-    products: [],
-    stats: {
-      totalProducts: 0,
-      totalQuantity: 0,
-      totalValue: 0,
-      outOfStock: 0,
-      lowStock: 0,
-      categories: {}
-    },
-    filters: {
+    currentTab: 'dashboard', // 'dashboard', 'equipments', 'models', 'brands', 'settings'
+    brands: [],
+    models: [],
+    equipments: [],
+    stats: null,
+    loading: false,
+
+    // Filtros de Equipamentos
+    equipmentFilters: {
       search: '',
+      brandId: 'all',
+      modelId: 'all',
       category: 'all',
       status: 'all',
-      sortBy: 'name',
-      sortOrder: 'asc'
+      sortBy: 'assetTag',
+      sortOrder: 'asc',
+      page: 1,
+      pageSize: 25
     },
-    viewMode: 'table',
-    modal: {
-      isOpen: false,
-      mode: 'create',
-      currentId: null
+
+    // Filtros de Modelos
+    modelFilters: {
+      search: '',
+      brandId: 'all',
+      category: 'all'
     },
-    deleteModal: {
-      isOpen: false,
-      targetId: null,
-      targetName: ''
-    },
-    isApiAvailable: true
+
+    // Filtros de Marcas
+    brandFilters: {
+      search: ''
+    }
   };
 
-  const STORAGE_KEY = 'gestor_inventario_local_db';
+  const API_BASE = '/api';
 
-  async function apiRequest(endpoint, options = {}) {
+  // ==========================================================
+  // COMUNICAÇÃO COM O SERVIDOR (COM FALLBACK LOCAL SE OFFLINE)
+  // ==========================================================
+  async function apiFetch(endpoint, options = {}) {
     try {
-      const res = await fetch(endpoint, {
-        ...options,
-        headers: {
-          'Content-Type': 'application/json',
-          ...(options.headers || {})
-        }
+      const res = await fetch(`${API_BASE}${endpoint}`, {
+        headers: { 'Content-Type': 'application/json' },
+        ...options
       });
       if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.message || `HTTP ${res.status}`);
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `Erro HTTP ${res.status}`);
       }
       return await res.json();
     } catch (err) {
-      state.isApiAvailable = false;
-      return null;
+      console.warn(`API ${endpoint} falhou:`, err.message);
+      throw err;
     }
   }
 
-  function getLocalProducts() {
+  async function loadAllData() {
+    state.loading = true;
+    render();
+
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch (e) {}
-    return [
-      {
-        id: "prod-1",
-        name: "Portátil Pro 15.6\" 16GB",
-        sku: "TECH-001",
-        category: "Informática",
-        price: 899.99,
-        quantity: 14,
-        minStock: 5,
-        supplier: "TechSupply Lda",
-        description: "Portátil com processador de alto desempenho e ecrã FHD.",
-        updatedAt: new Date().toISOString()
-      },
-      {
-        id: "prod-2",
-        name: "Rato Sem Fios Ergonómico",
-        sku: "ACC-002",
-        category: "Acessórios",
-        price: 29.90,
-        quantity: 4,
-        minStock: 10,
-        supplier: "Global Peripherals",
-        description: "Rato ergonómico recarregável com sensor ótico de alta precisão.",
-        updatedAt: new Date().toISOString()
-      },
-      {
-        id: "prod-3",
-        name: "Teclado Mecânico RGB",
-        sku: "ACC-003",
-        category: "Acessórios",
-        price: 79.50,
-        quantity: 0,
-        minStock: 5,
-        supplier: "Global Peripherals",
-        description: "Teclado mecânico com switches azuis e retroiluminação personalizável.",
-        updatedAt: new Date().toISOString()
+      const res = await apiFetch('/database');
+      if (res && res.data) {
+        state.brands = res.data.brands || [];
+        state.models = res.data.models || [];
+        state.equipments = res.data.equipments || [];
       }
-    ];
-  }
-
-  function saveLocalProducts(products) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-    } catch (e) {}
-  }
-
-  async function loadData() {
-    const queryParams = new URLSearchParams({
-      search: state.filters.search,
-      category: state.filters.category,
-      status: state.filters.status,
-      sortBy: state.filters.sortBy,
-      sortOrder: state.filters.sortOrder
-    });
-
-    const response = await apiRequest(`/api/products?${queryParams.toString()}`);
-    const statsResponse = await apiRequest('/api/stats');
-
-    if (response && response.success) {
-      state.products = response.data;
-      if (statsResponse && statsResponse.success) {
-        state.stats = statsResponse.stats;
-      }
-    } else {
-      let items = getLocalProducts();
-      
-      if (state.filters.search) {
-        const s = state.filters.search.toLowerCase().trim();
-        items = items.filter(i =>
-          i.name.toLowerCase().includes(s) ||
-          i.sku.toLowerCase().includes(s) ||
-          (i.supplier && i.supplier.toLowerCase().includes(s))
-        );
-      }
-      if (state.filters.category !== 'all') {
-        items = items.filter(i => i.category === state.filters.category);
-      }
-      if (state.filters.status === 'outOfStock') {
-        items = items.filter(i => Number(i.quantity) === 0);
-      } else if (state.filters.status === 'lowStock') {
-        items = items.filter(i => Number(i.quantity) > 0 && Number(i.quantity) <= Number(i.minStock || 5));
-      } else if (state.filters.status === 'inStock') {
-        items = items.filter(i => Number(i.quantity) > Number(i.minStock || 5));
-      }
-
-      items.sort((a, b) => {
-        let valA = a[state.filters.sortBy];
-        let valB = b[state.filters.sortBy];
-        const factor = state.filters.sortOrder === 'desc' ? -1 : 1;
-        if (state.filters.sortBy === 'price' || state.filters.sortBy === 'quantity') {
-          return (Number(valA) - Number(valB)) * factor;
+    } catch (err) {
+      // Se a API não responder (por exemplo, se aberto direto via file://), tenta do localStorage ou seed
+      console.log('Modo de contingência / offline ativado.');
+      let loaded = false;
+      const localData = localStorage.getItem('gestor_inventario_db');
+      if (localData) {
+        try {
+          const parsed = JSON.parse(localData);
+          if (parsed.brands && parsed.equipments && parsed.equipments.length > 0) {
+            state.brands = parsed.brands || [];
+            state.models = parsed.models || [];
+            state.equipments = parsed.equipments || [];
+            loaded = true;
+          }
+        } catch (e) {
+          console.error('Erro ao ler localStorage', e);
         }
-        return String(valA || '').localeCompare(String(valB || ''), 'pt') * factor;
-      });
+      }
 
-      state.products = items;
-
-      const allLocal = getLocalProducts();
-      let totalQty = 0, totalVal = 0, outStock = 0, lowStock = 0, cats = {};
-      allLocal.forEach(it => {
-        const q = Number(it.quantity) || 0;
-        const p = Number(it.price) || 0;
-        const min = Number(it.minStock) || 5;
-        totalQty += q;
-        totalVal += q * p;
-        if (q === 0) outStock++;
-        else if (q <= min) lowStock++;
-        cats[it.category] = (cats[it.category] || 0) + 1;
-      });
-
-      state.stats = {
-        totalProducts: allLocal.length,
-        totalQuantity: totalQty,
-        totalValue: Math.round(totalVal * 100) / 100,
-        outOfStock: outStock,
-        lowStock: lowStock,
-        categories: cats
-      };
-    }
-
-    renderApp();
-  }
-
-  async function createProduct(payload) {
-    if (state.isApiAvailable) {
-      const res = await apiRequest('/api/products', {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      });
-      if (res && res.success) {
-        showToast('Guardado', 'success');
-        await loadData();
-        return true;
+      if (!loaded && window.INITIAL_DATABASE) {
+        state.brands = window.INITIAL_DATABASE.brands || [];
+        state.models = window.INITIAL_DATABASE.models || [];
+        state.equipments = window.INITIAL_DATABASE.equipments || [];
+        syncLocalBackup();
       }
     }
 
-    const items = getLocalProducts();
-    const newItem = {
-      id: `prod-${Date.now()}`,
-      ...payload,
-      updatedAt: new Date().toISOString()
-    };
-    items.unshift(newItem);
-    saveLocalProducts(items);
-    showToast('Guardado', 'success');
-    await loadData();
-    return true;
-  }
-
-  async function updateProduct(id, payload) {
-    if (state.isApiAvailable) {
-      const res = await apiRequest(`/api/products/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(payload)
-      });
-      if (res && res.success) {
-        showToast('Atualizado', 'success');
-        await loadData();
-        return true;
-      }
-    }
-
-    const items = getLocalProducts();
-    const idx = items.findIndex(i => i.id === id);
-    if (idx !== -1) {
-      items[idx] = { ...items[idx], ...payload, updatedAt: new Date().toISOString() };
-      saveLocalProducts(items);
-      showToast('Atualizado', 'success');
-      await loadData();
-      return true;
-    }
-    return false;
-  }
-
-  async function deleteProduct(id) {
-    if (state.isApiAvailable) {
-      const res = await apiRequest(`/api/products/${id}`, { method: 'DELETE' });
-      if (res && res.success) {
-        showToast('Eliminado', 'success');
-        await loadData();
-        return true;
-      }
-    }
-
-    let items = getLocalProducts();
-    items = items.filter(i => i.id !== id);
-    saveLocalProducts(items);
-    showToast('Eliminado', 'success');
-    await loadData();
-    return true;
-  }
-
-  async function adjustStock(id, delta) {
-    const item = state.products.find(i => i.id === id);
-    if (!item) return;
-
-    const newQty = Math.max(0, Number(item.quantity) + delta);
-    if (state.isApiAvailable) {
-      const res = await apiRequest(`/api/products/${id}/adjust`, {
-        method: 'POST',
-        body: JSON.stringify({ delta })
-      });
-      if (res && res.success) {
-        await loadData();
-        return;
-      }
-    }
-
-    const items = getLocalProducts();
-    const target = items.find(i => i.id === id);
-    if (target) {
-      target.quantity = newQty;
-      target.updatedAt = new Date().toISOString();
-      saveLocalProducts(items);
-      await loadData();
+    state.loading = false;
+    render();
+    if (typeof window.dismissSplashScreen === 'function') {
+      window.dismissSplashScreen();
     }
   }
 
-  async function resetSampleData() {
-    if (confirm('Restaurar dados?')) {
-      if (state.isApiAvailable) {
-        await apiRequest('/api/reset', { method: 'POST' });
-      } else {
-        localStorage.removeItem(STORAGE_KEY);
-      }
-      showToast('Restaurado', 'info');
-      await loadData();
+  function syncLocalBackup() {
+    try {
+      localStorage.setItem('gestor_inventario_db', JSON.stringify({
+        brands: state.brands,
+        models: state.models,
+        equipments: state.equipments
+      }));
+    } catch (e) {
+      // ignore
     }
   }
 
-  function exportCSV() {
-    const items = state.products;
-    if (items.length === 0) return;
-
-    const headers = ['ID', 'Nome', 'SKU', 'Categoria', 'Preco', 'Quantidade', 'StockMinimo', 'Fornecedor', 'Descricao', 'DataAtualizacao'];
-    const rows = items.map(i => [
-      `"${i.id}"`,
-      `"${(i.name || '').replace(/"/g, '""')}"`,
-      `"${(i.sku || '').replace(/"/g, '""')}"`,
-      `"${(i.category || '').replace(/"/g, '""')}"`,
-      i.price,
-      i.quantity,
-      i.minStock || 5,
-      `"${(i.supplier || '').replace(/"/g, '""')}"`,
-      `"${(i.description || '').replace(/"/g, '""')}"`,
-      `"${i.updatedAt || ''}"`
-    ]);
-
-    const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `inventario_${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
-  let toastContainer = null;
+  // ==========================================================
+  // NOTIFICAÇÕES TOAST
+  // ==========================================================
   function showToast(message, type = 'info') {
-    if (!toastContainer) {
-      toastContainer = document.createElement('div');
-      toastContainer.className = 'toast-container';
-      document.body.appendChild(toastContainer);
-    }
+    const container = document.getElementById('toast-container');
+    if (!container) return;
 
     const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
-    toastContainer.appendChild(toast);
+    toast.className = `toast toast-${type}`;
+    
+    let icon = '';
+
+    toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
+    container.appendChild(toast);
 
     setTimeout(() => {
-      toast.remove();
-    }, 2500);
-  }
-
-  const appRoot = document.getElementById('app');
-
-  function renderApp() {
-    appRoot.innerHTML = '';
-
-    const container = document.createElement('div');
-    container.className = 'app-container';
-
-    container.appendChild(createHeader());
-    container.appendChild(createStatsGrid());
-    container.appendChild(createToolbar());
-    container.appendChild(createInventoryContent());
-
-    appRoot.appendChild(container);
-
-    renderProductModal();
-    renderDeleteModal();
-  }
-
-  function createHeader() {
-    const header = document.createElement('header');
-    header.className = 'header-card';
-
-    const titleBox = document.createElement('div');
-    titleBox.className = 'header-title-box';
-    titleBox.innerHTML = `<h1>Gestor de Inventário</h1>`;
-
-    const actions = document.createElement('div');
-    actions.className = 'header-actions';
-
-    const addBtn = document.createElement('button');
-    addBtn.className = 'btn btn-primary';
-    addBtn.textContent = 'Adicionar Produto';
-    addBtn.onclick = () => openProductModal('create');
-
-    const exportBtn = document.createElement('button');
-    exportBtn.className = 'btn btn-secondary';
-    exportBtn.textContent = 'Exportar CSV';
-    exportBtn.onclick = exportCSV;
-
-    const resetBtn = document.createElement('button');
-    resetBtn.className = 'btn btn-secondary';
-    resetBtn.textContent = 'Restaurar';
-    resetBtn.onclick = resetSampleData;
-
-    actions.appendChild(addBtn);
-    actions.appendChild(exportBtn);
-    actions.appendChild(resetBtn);
-
-    header.appendChild(titleBox);
-    header.appendChild(actions);
-    return header;
-  }
-
-  function createStatsGrid() {
-    const grid = document.createElement('div');
-    grid.className = 'stats-grid';
-
-    const stats = state.stats;
-    const formatCurrency = val => new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(val || 0);
-
-    const items = [
-      { label: 'Total de Produtos', value: stats.totalProducts, icon: '🏷️', colorClass: 'blue' },
-      { label: 'Unidades em Stock', value: stats.totalQuantity, icon: '📊', colorClass: 'green' },
-      { label: 'Valor Total', value: formatCurrency(stats.totalValue), icon: '💶', colorClass: 'blue' },
-      { label: 'Stock Baixo', value: stats.lowStock, icon: '⚠️', colorClass: 'amber' },
-      { label: 'Esgotados', value: stats.outOfStock, icon: '🚫', colorClass: 'red' }
-    ];
-
-    items.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'stat-card';
-      card.innerHTML = `
-        <div class="stat-info">
-          <div class="stat-label">${item.label}</div>
-          <div class="stat-value">${item.value}</div>
-        </div>
-        <div class="stat-icon ${item.colorClass}">${item.icon}</div>
-      `;
-      grid.appendChild(card);
-    });
-
-    return grid;
-  }
-
-  function createToolbar() {
-    const card = document.createElement('div');
-    card.className = 'toolbar-card';
-
-    const row1 = document.createElement('div');
-    row1.className = 'toolbar-row';
-
-    const searchBox = document.createElement('div');
-    searchBox.className = 'search-box';
-    searchBox.innerHTML = `
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" class="search-input" placeholder="Pesquisar..." value="${state.filters.search}">
-    `;
-    const searchInput = searchBox.querySelector('input');
-    let debounceTimer;
-    searchInput.oninput = (e) => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        state.filters.search = e.target.value;
-        loadData();
-      }, 250);
-    };
-
-    const filtersGroup = document.createElement('div');
-    filtersGroup.className = 'filters-group';
-
-    const catSelect = document.createElement('select');
-    catSelect.className = 'select-custom';
-    
-    const categories = Object.keys(state.stats.categories || {});
-    let catOptions = `<option value="all">Todas as Categorias</option>`;
-    categories.forEach(cat => {
-      const selected = state.filters.category === cat ? 'selected' : '';
-      catOptions += `<option value="${cat}" ${selected}>${cat} (${state.stats.categories[cat]})</option>`;
-    });
-    catSelect.innerHTML = catOptions;
-    catSelect.onchange = (e) => {
-      state.filters.category = e.target.value;
-      loadData();
-    };
-
-    const sortSelect = document.createElement('select');
-    sortSelect.className = 'select-custom';
-    const sortOptions = [
-      { id: 'name_asc', label: 'Nome (A-Z)' },
-      { id: 'name_desc', label: 'Nome (Z-A)' },
-      { id: 'price_asc', label: 'Preço: Menor' },
-      { id: 'price_desc', label: 'Preço: Maior' },
-      { id: 'quantity_asc', label: 'Quantidade: Menor' },
-      { id: 'quantity_desc', label: 'Quantidade: Maior' },
-      { id: 'updatedAt_desc', label: 'Recentes' }
-    ];
-    sortSelect.innerHTML = sortOptions.map(opt => {
-      const current = `${state.filters.sortBy}_${state.filters.sortOrder}`;
-      return `<option value="${opt.id}" ${current === opt.id ? 'selected' : ''}>${opt.label}</option>`;
-    }).join('');
-
-    sortSelect.onchange = (e) => {
-      const [by, order] = e.target.value.split('_');
-      state.filters.sortBy = by;
-      state.filters.sortOrder = order;
-      loadData();
-    };
-
-    const viewToggle = document.createElement('div');
-    viewToggle.style.display = 'flex';
-    viewToggle.style.border = '1px solid var(--slate-300)';
-    viewToggle.style.borderRadius = 'var(--radius-sm)';
-    viewToggle.style.overflow = 'hidden';
-
-    const tableBtn = document.createElement('button');
-    tableBtn.className = 'btn';
-    tableBtn.style.padding = '8px 12px';
-    tableBtn.style.borderRadius = '0';
-    tableBtn.style.fontSize = '12px';
-    tableBtn.style.background = state.viewMode === 'table' ? 'var(--primary)' : 'var(--white)';
-    tableBtn.style.color = state.viewMode === 'table' ? 'var(--white)' : 'var(--slate-800)';
-    tableBtn.textContent = 'Tabela';
-    tableBtn.onclick = () => {
-      state.viewMode = 'table';
-      renderApp();
-    };
-
-    const gridBtn = document.createElement('button');
-    gridBtn.className = 'btn';
-    gridBtn.style.padding = '8px 12px';
-    gridBtn.style.borderRadius = '0';
-    gridBtn.style.fontSize = '12px';
-    gridBtn.style.background = state.viewMode === 'grid' ? 'var(--primary)' : 'var(--white)';
-    gridBtn.style.color = state.viewMode === 'grid' ? 'var(--white)' : 'var(--slate-800)';
-    gridBtn.textContent = 'Grelha';
-    gridBtn.onclick = () => {
-      state.viewMode = 'grid';
-      renderApp();
-    };
-
-    viewToggle.appendChild(tableBtn);
-    viewToggle.appendChild(gridBtn);
-
-    filtersGroup.appendChild(catSelect);
-    filtersGroup.appendChild(sortSelect);
-    filtersGroup.appendChild(viewToggle);
-
-    row1.appendChild(searchBox);
-    row1.appendChild(filtersGroup);
-
-    const row2 = document.createElement('div');
-    row2.className = 'toolbar-row';
-
-    const pillsContainer = document.createElement('div');
-    pillsContainer.className = 'status-pills';
-
-    const statuses = [
-      { id: 'all', label: 'Todos' },
-      { id: 'inStock', label: 'Em Stock' },
-      { id: 'lowStock', label: `Stock Baixo (${state.stats.lowStock})` },
-      { id: 'outOfStock', label: `Esgotados (${state.stats.outOfStock})` }
-    ];
-
-    statuses.forEach(st => {
-      const pill = document.createElement('button');
-      pill.className = `pill-btn ${state.filters.status === st.id ? 'active' : ''}`;
-      pill.textContent = st.label;
-      pill.onclick = () => {
-        state.filters.status = st.id;
-        loadData();
-      };
-      pillsContainer.appendChild(pill);
-    });
-
-    row2.appendChild(pillsContainer);
-
-    card.appendChild(row1);
-    card.appendChild(row2);
-    return card;
-  }
-
-  function createInventoryContent() {
-    const card = document.createElement('div');
-    card.className = 'table-card';
-
-    if (state.products.length === 0) {
-      card.innerHTML = `
-        <div class="empty-state">
-          <h3>Sem produtos</h3>
-          <button class="btn btn-primary" id="btn-empty-add">Adicionar Produto</button>
-        </div>
-      `;
-      card.querySelector('#btn-empty-add').onclick = () => openProductModal('create');
-      return card;
-    }
-
-    if (state.viewMode === 'grid') {
-      card.appendChild(createGridView());
-    } else {
-      card.appendChild(createTableView());
-    }
-
-    const footer = document.createElement('div');
-    footer.className = 'table-footer';
-    footer.innerHTML = `<div>Total: <strong>${state.products.length}</strong></div>`;
-    card.appendChild(footer);
-
-    return card;
-  }
-
-  function getStockStatusBadge(quantity, minStock = 5) {
-    const q = Number(quantity);
-    const min = Number(minStock);
-
-    if (q === 0) {
-      return `<span class="badge-stock out-of-stock">Esgotado</span>`;
-    }
-    if (q <= min) {
-      return `<span class="badge-stock low-stock">Baixo (${q})</span>`;
-    }
-    return `<span class="badge-stock in-stock">Em Stock (${q})</span>`;
-  }
-
-  function createTableView() {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'table-responsive';
-
-    const table = document.createElement('table');
-    table.className = 'inventory-table';
-
-    table.innerHTML = `
-      <thead>
-        <tr>
-          <th>Produto</th>
-          <th>SKU</th>
-          <th>Categoria</th>
-          <th>Preço</th>
-          <th>Quantidade</th>
-          <th>Total</th>
-          <th>Estado</th>
-          <th style="text-align: right;">Ações</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    `;
-
-    const tbody = table.querySelector('tbody');
-    const formatCurrency = val => new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(val || 0);
-
-    state.products.forEach(item => {
-      const tr = document.createElement('tr');
-      const totalItemValue = (Number(item.price) || 0) * (Number(item.quantity) || 0);
-
-      tr.innerHTML = `
-        <td>
-          <div class="product-title">${escapeHtml(item.name)}</div>
-          ${item.supplier ? `<div class="product-supplier">${escapeHtml(item.supplier)}</div>` : ''}
-        </td>
-        <td><span class="badge-sku">${escapeHtml(item.sku || '')}</span></td>
-        <td><span class="badge-cat">${escapeHtml(item.category || '')}</span></td>
-        <td><strong>${formatCurrency(item.price)}</strong></td>
-        <td>
-          <div class="stock-stepper">
-            <button class="btn-icon-step" data-action="decrease">-</button>
-            <span style="font-weight: 700; min-width: 28px; text-align: center;">${item.quantity}</span>
-            <button class="btn-icon-step" data-action="increase">+</button>
-          </div>
-        </td>
-        <td>${formatCurrency(totalItemValue)}</td>
-        <td>${getStockStatusBadge(item.quantity, item.minStock)}</td>
-        <td style="text-align: right;">
-          <div style="display: inline-flex; gap: 8px;">
-            <button class="btn btn-edit-outline" data-action="edit">Editar</button>
-            <button class="btn btn-danger-outline" data-action="delete">Eliminar</button>
-          </div>
-        </td>
-      `;
-
-      tr.querySelector('[data-action="decrease"]').onclick = () => adjustStock(item.id, -1);
-      tr.querySelector('[data-action="increase"]').onclick = () => adjustStock(item.id, 1);
-      tr.querySelector('[data-action="edit"]').onclick = () => openProductModal('edit', item);
-      tr.querySelector('[data-action="delete"]').onclick = () => openDeleteModal(item.id, item.name);
-
-      tbody.appendChild(tr);
-    });
-
-    wrapper.appendChild(table);
-    return wrapper;
-  }
-
-  function createGridView() {
-    const grid = document.createElement('div');
-    grid.className = 'items-grid';
-    const formatCurrency = val => new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(val || 0);
-
-    state.products.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'item-grid-card';
-
-      card.innerHTML = `
-        <div>
-          <div class="item-grid-header">
-            <span class="badge-cat">${escapeHtml(item.category || '')}</span>
-            <span class="badge-sku">${escapeHtml(item.sku)}</span>
-          </div>
-          <h4 style="font-size: 16px; font-weight: 700; margin: 10px 0 4px; color: var(--dark);">${escapeHtml(item.name)}</h4>
-          <p style="font-size: 13px; color: var(--slate-500); min-height: 38px; line-height: 1.4;">
-            ${escapeHtml(item.description || '')}
-          </p>
-        </div>
-
-        <div style="background: var(--slate-50); padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--slate-200); margin: 6px 0;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span style="font-size: 12px; color: var(--slate-500);">Preço:</span>
-            <strong style="font-size: 15px; color: var(--dark);">${formatCurrency(item.price)}</strong>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span style="font-size: 12px; color: var(--slate-500);">Stock:</span>
-            <div class="stock-stepper">
-              <button class="btn-icon-step" data-action="decrease">-</button>
-              <strong style="min-width: 24px; text-align: center;">${item.quantity}</strong>
-              <button class="btn-icon-step" data-action="increase">+</button>
-            </div>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 12px; color: var(--slate-500);">Estado:</span>
-            ${getStockStatusBadge(item.quantity, item.minStock)}
-          </div>
-        </div>
-
-        <div class="item-grid-actions">
-          <button class="btn btn-edit-outline" style="flex: 1;" data-action="edit">Editar</button>
-          <button class="btn btn-danger-outline" style="flex: 1;" data-action="delete">Eliminar</button>
-        </div>
-      `;
-
-      card.querySelector('[data-action="decrease"]').onclick = () => adjustStock(item.id, -1);
-      card.querySelector('[data-action="increase"]').onclick = () => adjustStock(item.id, 1);
-      card.querySelector('[data-action="edit"]').onclick = () => openProductModal('edit', item);
-      card.querySelector('[data-action="delete"]').onclick = () => openDeleteModal(item.id, item.name);
-
-      grid.appendChild(card);
-    });
-
-    return grid;
-  }
-
-  let modalBackdrop = null;
-
-  function renderProductModal() {
-    if (modalBackdrop) modalBackdrop.remove();
-
-    modalBackdrop = document.createElement('div');
-    modalBackdrop.className = 'modal-backdrop';
-    modalBackdrop.id = 'product-modal';
-
-    const isEdit = state.modal.mode === 'edit';
-    const currentItem = isEdit ? state.products.find(i => i.id === state.modal.currentId) : null;
-
-    modalBackdrop.innerHTML = `
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>${isEdit ? 'Editar Produto' : 'Novo Produto'}</h3>
-          <button class="modal-close-btn" id="modal-close">&times;</button>
-        </div>
-        <form id="product-form">
-          <div class="modal-body">
-            <div class="form-grid">
-              
-              <div class="form-group full-width">
-                <label class="form-label">Nome *</label>
-                <input type="text" class="form-input" id="form-name" required value="${currentItem ? escapeHtml(currentItem.name) : ''}">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">SKU *</label>
-                <div class="input-with-action">
-                  <input type="text" class="form-input" id="form-sku" required value="${currentItem ? escapeHtml(currentItem.sku) : ''}">
-                  <button type="button" class="btn btn-secondary" id="btn-gen-sku" style="padding: 0 10px; font-size: 12px;">Gerar</button>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Categoria *</label>
-                <input type="text" class="form-input" id="form-category" required list="categories-list" value="${currentItem ? escapeHtml(currentItem.category) : ''}">
-                <datalist id="categories-list">
-                  <option value="Informática">
-                  <option value="Acessórios">
-                  <option value="Áudio">
-                  <option value="Mobiliário">
-                </datalist>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Preço (€) *</label>
-                <input type="number" step="0.01" min="0" class="form-input" id="form-price" required value="${currentItem ? currentItem.price : ''}">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Quantidade *</label>
-                <input type="number" min="0" step="1" class="form-input" id="form-quantity" required value="${currentItem !== null && currentItem !== undefined ? currentItem.quantity : '1'}">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Stock Mínimo</label>
-                <input type="number" min="0" step="1" class="form-input" id="form-min-stock" value="${currentItem ? currentItem.minStock : '5'}">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label">Fornecedor</label>
-                <input type="text" class="form-input" id="form-supplier" value="${currentItem ? escapeHtml(currentItem.supplier || '') : ''}">
-              </div>
-
-              <div class="form-group full-width">
-                <label class="form-label">Descrição</label>
-                <textarea class="form-textarea" id="form-description">${currentItem ? escapeHtml(currentItem.description || '') : ''}</textarea>
-              </div>
-
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" id="btn-cancel">Cancelar</button>
-            <button type="submit" class="btn btn-primary" id="btn-save">Guardar</button>
-          </div>
-        </form>
-      </div>
-    `;
-
-    document.body.appendChild(modalBackdrop);
-
-    modalBackdrop.querySelector('#modal-close').onclick = closeProductModal;
-    modalBackdrop.querySelector('#btn-cancel').onclick = closeProductModal;
-
-    modalBackdrop.querySelector('#btn-gen-sku').onclick = () => {
-      const cat = (modalBackdrop.querySelector('#form-category').value || 'PRD').slice(0, 3).toUpperCase();
-      const random = Math.floor(100 + Math.random() * 900);
-      modalBackdrop.querySelector('#form-sku').value = `${cat}-${random}`;
-    };
-
-    modalBackdrop.onclick = (e) => {
-      if (e.target === modalBackdrop) closeProductModal();
-    };
-
-    const form = modalBackdrop.querySelector('#product-form');
-    form.onsubmit = async (e) => {
-      e.preventDefault();
-
-      const payload = {
-        name: modalBackdrop.querySelector('#form-name').value.trim(),
-        sku: modalBackdrop.querySelector('#form-sku').value.trim().toUpperCase(),
-        category: modalBackdrop.querySelector('#form-category').value.trim() || 'Geral',
-        price: parseFloat(modalBackdrop.querySelector('#form-price').value) || 0,
-        quantity: parseInt(modalBackdrop.querySelector('#form-quantity').value, 10) || 0,
-        minStock: parseInt(modalBackdrop.querySelector('#form-min-stock').value, 10) || 5,
-        supplier: modalBackdrop.querySelector('#form-supplier').value.trim(),
-        description: modalBackdrop.querySelector('#form-description').value.trim()
-      };
-
-      if (!payload.name) return;
-
-      let success = false;
-      if (state.modal.mode === 'edit') {
-        success = await updateProduct(state.modal.currentId, payload);
-      } else {
-        success = await createProduct(payload);
-      }
-
-      if (success) {
-        closeProductModal();
-      }
-    };
-  }
-
-  function openProductModal(mode = 'create', item = null) {
-    state.modal.mode = mode;
-    state.modal.currentId = item ? item.id : null;
-    renderProductModal();
-    requestAnimationFrame(() => {
-      modalBackdrop.classList.add('open');
-      document.getElementById('form-name').focus();
-    });
-  }
-
-  function closeProductModal() {
-    if (modalBackdrop) {
-      modalBackdrop.classList.remove('open');
-    }
-  }
-
-  let deleteModalBackdrop = null;
-
-  function renderDeleteModal() {
-    if (deleteModalBackdrop) deleteModalBackdrop.remove();
-
-    deleteModalBackdrop = document.createElement('div');
-    deleteModalBackdrop.className = 'modal-backdrop';
-    deleteModalBackdrop.id = 'delete-modal';
-
-    deleteModalBackdrop.innerHTML = `
-      <div class="modal-content" style="max-width: 400px;">
-        <div class="modal-header">
-          <h3 style="color: var(--danger);">Eliminar Produto</h3>
-          <button class="modal-close-btn" id="del-modal-close">&times;</button>
-        </div>
-        <div class="modal-body" style="padding: 20px 24px;">
-          <p style="font-size: 15px; color: var(--dark);">
-            Eliminar <strong id="del-product-name"></strong>?
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" id="btn-cancel-del">Cancelar</button>
-          <button class="btn" id="btn-confirm-del" style="background: var(--danger); color: var(--white);">
-            Eliminar
-          </button>
-        </div>
-      </div>
-    `;
-
-    document.body.appendChild(deleteModalBackdrop);
-
-    deleteModalBackdrop.querySelector('#del-modal-close').onclick = closeDeleteModal;
-    deleteModalBackdrop.querySelector('#btn-cancel-del').onclick = closeDeleteModal;
-    deleteModalBackdrop.onclick = (e) => {
-      if (e.target === deleteModalBackdrop) closeDeleteModal();
-    };
-
-    deleteModalBackdrop.querySelector('#btn-confirm-del').onclick = async () => {
-      if (state.deleteModal.targetId) {
-        await deleteProduct(state.deleteModal.targetId);
-        closeDeleteModal();
-      }
-    };
-  }
-
-  function openDeleteModal(id, name) {
-    state.deleteModal.targetId = id;
-    state.deleteModal.targetName = name;
-    renderDeleteModal();
-    document.getElementById('del-product-name').textContent = `"${name}"`;
-    requestAnimationFrame(() => {
-      deleteModalBackdrop.classList.add('open');
-    });
-  }
-
-  function closeDeleteModal() {
-    if (deleteModalBackdrop) {
-      deleteModalBackdrop.classList.remove('open');
-    }
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(10px)';
+      toast.style.transition = 'all 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 3500);
   }
 
   function escapeHtml(str) {
-    if (!str) return '';
+    if (str === null || str === undefined) return '';
     return String(str)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -1572,14 +150,2060 @@
       .replace(/'/g, '&#039;');
   }
 
-  function init() {
-    injectStyles();
-    loadData();
+  function formatCurrency(val) {
+    const num = Number(val) || 0;
+    return new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR' }).format(num);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
+  function formatDate(dStr) {
+    if (!dStr) return '-';
+    try {
+      const d = new Date(dStr);
+      return d.toLocaleDateString('pt-PT');
+    } catch {
+      return dStr;
+    }
   }
+
+  // ==========================================================
+  // GESTÃO DE MODAIS
+  // ==========================================================
+  function openModal(contentHtml) {
+    const container = document.getElementById('modal-container');
+    const content = document.getElementById('modal-content');
+    if (!container || !content) return;
+
+    content.innerHTML = contentHtml;
+    container.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    // Fecha ao clicar fora
+    container.onclick = (e) => {
+      if (e.target === container) closeModal();
+    };
+  }
+
+  function closeModal() {
+    const container = document.getElementById('modal-container');
+    if (!container) return;
+    container.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  window.closeModal = closeModal;
+
+  // ==========================================================
+  // NAVEGAÇÃO E ABAS
+  // ==========================================================
+  function setTab(tabName) {
+    state.currentTab = tabName;
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ==========================================================
+  // RENDERIZAÇÃO PRINCIPAL
+  // ==========================================================
+  function render() {
+    const app = document.getElementById('app');
+    if (!app) return;
+
+    const totalEq = state.equipments.length;
+    const totalMod = state.models.length;
+    const totalBra = state.brands.length;
+
+    let contentHtml = '';
+
+    if (state.currentTab === 'dashboard') {
+      contentHtml = renderDashboardView();
+    } else if (state.currentTab === 'equipments') {
+      contentHtml = renderEquipmentsView();
+    } else if (state.currentTab === 'models') {
+      contentHtml = renderModelsView();
+    } else if (state.currentTab === 'brands') {
+      contentHtml = renderBrandsView();
+    } else if (state.currentTab === 'settings') {
+      contentHtml = renderSettingsView();
+    }
+
+    app.innerHTML = `
+      <!-- Cabeçalho Principal -->
+      <header class="top-navbar">
+        <div class="top-navbar-content">
+          <div class="brand-title">
+            <div class="brand-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></div>
+            <div class="brand-text">
+              <h1>Gestor de Inventário TI</h1>
+              <p>5 Marcas • 50 Modelos • ${totalEq} Equipamentos Registados</p>
+            </div>
+          </div>
+
+          <nav class="nav-tabs">
+            <button class="nav-tab-btn ${state.currentTab === 'dashboard' ? 'active' : ''}" onclick="window.setTab('dashboard')">
+              Painel
+            </button>
+            <button class="nav-tab-btn ${state.currentTab === 'equipments' ? 'active' : ''}" onclick="window.setTab('equipments')">
+              Equipamentos <span class="badge-pill">${totalEq}</span>
+            </button>
+            <button class="nav-tab-btn ${state.currentTab === 'models' ? 'active' : ''}" onclick="window.setTab('models')">
+              Modelos <span class="badge-pill">${totalMod}</span>
+            </button>
+            <button class="nav-tab-btn ${state.currentTab === 'brands' ? 'active' : ''}" onclick="window.setTab('brands')">
+              Marcas <span class="badge-pill">${totalBra}</span>
+            </button>
+            <button class="nav-tab-btn ${state.currentTab === 'settings' ? 'active' : ''}" onclick="window.setTab('settings')">
+              Dados & Sistema
+            </button>
+          </nav>
+        </div>
+      </header>
+
+      <!-- Conteúdo da Aba Ativa -->
+      <main class="main-wrapper">
+        ${contentHtml}
+      </main>
+    `;
+
+    bindTabEvents();
+  }
+
+  // ==========================================================
+  // ABA: DASHBOARD / PAINEL GERAL
+  // ==========================================================
+  function renderDashboardView() {
+    const totalEq = state.equipments.length;
+    const totalMod = state.models.length;
+    const totalBra = state.brands.length;
+
+    const totalValue = state.equipments.reduce((sum, e) => sum + (Number(e.value) || 0), 0);
+
+    // Contagens de status
+    const statusCounts = {
+      'Em Uso': 0,
+      'Disponível': 0,
+      'Em Manutenção': 0,
+      'Em Reserva': 0
+    };
+
+    state.equipments.forEach(e => {
+      const st = e.status || 'Disponível';
+      statusCounts[st] = (statusCounts[st] || 0) + 1;
+    });
+
+    // Agrupamento por Marca
+    const brandStats = state.brands.map(b => {
+      const eqCount = state.equipments.filter(e => e.brandId === b.id).length;
+      const modCount = state.models.filter(m => m.brandId === b.id).length;
+      const val = state.equipments
+        .filter(e => e.brandId === b.id)
+        .reduce((sum, e) => sum + (Number(e.value) || 0), 0);
+      return {
+        ...b,
+        eqCount,
+        modCount,
+        val
+      };
+    });
+
+    // Categorias
+    const catCounts = {};
+    state.equipments.forEach(e => {
+      const c = e.category || 'Geral';
+      catCounts[c] = (catCounts[c] || 0) + 1;
+    });
+
+    return `
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card" onclick="window.setTab('equipments')" style="cursor: pointer;">
+          <div class="kpi-info">
+            <h3>Equipamentos</h3>
+            <div class="kpi-value">${totalEq}</div>
+            <div class="kpi-sub">${statusCounts['Em Uso']} em uso • ${statusCounts['Disponível']} disponíveis</div>
+          </div>
+          <div class="kpi-icon-wrap kpi-blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        </div>
+
+        <div class="kpi-card" onclick="window.setTab('models')" style="cursor: pointer;">
+          <div class="kpi-info">
+            <h3>Modelos TI</h3>
+            <div class="kpi-value">${totalMod}</div>
+            <div class="kpi-sub">10 modelos por cada marca</div>
+          </div>
+          <div class="kpi-icon-wrap kpi-indigo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+        </div>
+
+        <div class="kpi-card" onclick="window.setTab('brands')" style="cursor: pointer;">
+          <div class="kpi-info">
+            <h3>Marcas</h3>
+            <div class="kpi-value">${totalBra}</div>
+            <div class="kpi-sub">Dell, Apple, HP, Lenovo, Cisco</div>
+          </div>
+          <div class="kpi-icon-wrap kpi-emerald"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-info">
+            <h3>Valor Patrimonial</h3>
+            <div class="kpi-value" style="font-size: 24px;">${formatCurrency(totalValue)}</div>
+            <div class="kpi-sub">Média de ${formatCurrency(totalEq ? totalValue / totalEq : 0)} / unid.</div>
+          </div>
+          <div class="kpi-icon-wrap kpi-purple"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M14.5 9a3.5 3.5 0 0 0-5 0v6a3.5 3.5 0 0 0 5 0"/><line x1="7" y1="10.5" x2="13" y2="10.5"/><line x1="7" y1="13.5" x2="13" y2="13.5"/></svg></div>
+        </div>
+      </div>
+
+      <!-- Linha de Gráficos e Distribuição -->
+      <div class="dashboard-row">
+        <!-- Distribuição por Estado -->
+        <div class="content-card">
+          <div class="card-header-flex">
+            <div>
+              <h2 class="card-title">Estado do Parque Informático</h2>
+              <p class="card-subtitle">Condição operacional dos ${totalEq} equipamentos</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="window.setTab('equipments')">Ver Tabela</button>
+          </div>
+
+          <div class="status-pill-list">
+            <!-- Em Uso -->
+            <div class="status-bar-item">
+              <div class="status-bar-header">
+                <span class="status-badge status-em-uso">Em Uso</span>
+                <span><strong>${statusCounts['Em Uso']}</strong> (${totalEq ? Math.round((statusCounts['Em Uso']/totalEq)*100) : 0}%)</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill bg-in-use" style="width: ${totalEq ? (statusCounts['Em Uso']/totalEq)*100 : 0}%;"></div>
+              </div>
+            </div>
+
+            <!-- Disponível -->
+            <div class="status-bar-item">
+              <div class="status-bar-header">
+                <span class="status-badge status-disponivel">Disponível em Stock</span>
+                <span><strong>${statusCounts['Disponível']}</strong> (${totalEq ? Math.round((statusCounts['Disponível']/totalEq)*100) : 0}%)</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill bg-available" style="width: ${totalEq ? (statusCounts['Disponível']/totalEq)*100 : 0}%;"></div>
+              </div>
+            </div>
+
+            <!-- Em Manutenção -->
+            <div class="status-bar-item">
+              <div class="status-bar-header">
+                <span class="status-badge status-em-manutencao">Em Manutenção</span>
+                <span><strong>${statusCounts['Em Manutenção']}</strong> (${totalEq ? Math.round((statusCounts['Em Manutenção']/totalEq)*100) : 0}%)</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill bg-maintenance" style="width: ${totalEq ? (statusCounts['Em Manutenção']/totalEq)*100 : 0}%;"></div>
+              </div>
+            </div>
+
+            <!-- Em Reserva -->
+            <div class="status-bar-item">
+              <div class="status-bar-header">
+                <span class="status-badge status-em-reserva">Em Reserva (Hot-Spare)</span>
+                <span><strong>${statusCounts['Em Reserva']}</strong> (${totalEq ? Math.round((statusCounts['Em Reserva']/totalEq)*100) : 0}%)</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill bg-spare" style="width: ${totalEq ? (statusCounts['Em Reserva']/totalEq)*100 : 0}%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distribuição por Marca -->
+        <div class="content-card">
+          <div class="card-header-flex">
+            <div>
+              <h2 class="card-title">Equipamentos por Marca</h2>
+              <p class="card-subtitle">Volume e valor investido por fabricante</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="window.setTab('brands')">Ver Marcas</button>
+          </div>
+
+          <div class="brand-breakdown-list">
+            ${brandStats.map(b => {
+              const codeClass = b.code ? b.code.toLowerCase() : 'dell';
+              return `
+                <div class="brand-stat-item" onclick="window.filterByBrand('${b.id}')" style="cursor: pointer;">
+                  <div class="brand-stat-meta">
+                    <div class="brand-avatar ${codeClass}">${escapeHtml(b.code || b.name.slice(0, 3))}</div>
+                    <div>
+                      <strong style="font-size: 14px; color: var(--dark-900);">${escapeHtml(b.name)}</strong>
+                      <div style="font-size: 12px; color: var(--slate-500);">${b.modCount} modelos disponíveis</div>
+                    </div>
+                  </div>
+                  <div class="brand-stat-counts">
+                    <strong>${b.eqCount} unid.</strong>
+                    <div style="color: var(--primary); font-weight: 600;">${formatCurrency(b.val)}</div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- Linha com Categorias e Ações Rápidas -->
+      <div class="dashboard-row">
+        <!-- Categorias de Equipamentos -->
+        <div class="content-card">
+          <h2 class="card-title" style="margin-bottom: 16px;">Categorias Principais</h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            ${Object.entries(catCounts).map(([cat, count]) => `
+              <div style="background: var(--slate-50); border: 1px solid var(--slate-200); padding: 8px 14px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 8px;">
+                <span style="font-weight: 600; font-size: 13px;">${escapeHtml(cat)}</span>
+                <span style="background: var(--primary-light); color: var(--primary); padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700;">${count}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- Ações Rápidas -->
+        <div class="content-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <h2 class="card-title" style="margin-bottom: 12px;">Ações Rápidas</h2>
+            <p class="card-subtitle" style="margin-bottom: 18px;">Operações frequentes de catalogação e auditoria patrimonial.</p>
+          </div>
+          
+          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <button class="btn btn-primary" onclick="window.openNewEquipmentModal()">
+              + Novo Equipamento
+            </button>
+            <button class="btn btn-secondary" onclick="window.openNewModelModal()">
+              + Novo Modelo
+            </button>
+            <button class="btn btn-secondary" onclick="window.openNewBrandModal()">
+              + Nova Marca
+            </button>
+            <button class="btn btn-secondary" onclick="window.exportCSV()">
+              Exportar Inventário (CSV)
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ==========================================================
+  // ABA: EQUIPAMENTOS (TABELA COM 200 ITENS + FILTROS)
+  // ==========================================================
+  function renderEquipmentsView() {
+    const f = state.equipmentFilters;
+
+    // Filtragem em memória
+    let items = [...state.equipments];
+
+    if (f.search) {
+      const s = f.search.toLowerCase().trim();
+      items = items.filter(e =>
+        (e.assetTag && e.assetTag.toLowerCase().includes(s)) ||
+        (e.serialNumber && e.serialNumber.toLowerCase().includes(s)) ||
+        (e.modelName && e.modelName.toLowerCase().includes(s)) ||
+        (e.brandName && e.brandName.toLowerCase().includes(s)) ||
+        (e.assignedTo && e.assignedTo.toLowerCase().includes(s)) ||
+        (e.location && e.location.toLowerCase().includes(s)) ||
+        (e.category && e.category.toLowerCase().includes(s))
+      );
+    }
+
+    if (f.brandId !== 'all') {
+      items = items.filter(e => e.brandId === f.brandId);
+    }
+
+    if (f.modelId !== 'all') {
+      items = items.filter(e => e.modelId === f.modelId);
+    }
+
+    if (f.category !== 'all') {
+      items = items.filter(e => e.category === f.category);
+    }
+
+    if (f.status !== 'all') {
+      items = items.filter(e => e.status === f.status);
+    }
+
+    // Ordenação
+    items.sort((a, b) => {
+      let valA = a[f.sortBy];
+      let valB = b[f.sortBy];
+      const mult = f.sortOrder === 'desc' ? -1 : 1;
+
+      if (f.sortBy === 'value') {
+        return (Number(valA || 0) - Number(valB || 0)) * mult;
+      }
+      return String(valA || '').localeCompare(String(valB || ''), 'pt', { sensitivity: 'base' }) * mult;
+    });
+
+    // Paginação
+    const totalFiltered = items.length;
+    let paginated = items;
+    let totalPages = 1;
+
+    if (f.pageSize !== 'all') {
+      const size = parseInt(f.pageSize, 10);
+      totalPages = Math.ceil(totalFiltered / size) || 1;
+      if (f.page > totalPages) f.page = totalPages;
+      const start = (f.page - 1) * size;
+      paginated = items.slice(start, start + size);
+    }
+
+    // Categorias únicas para filtro
+    const uniqueCategories = Array.from(new Set(state.models.map(m => m.category))).sort();
+
+    // Modelos para o dropdown (se marca selecionada, filtra modelos)
+    let availableModels = state.models;
+    if (f.brandId !== 'all') {
+      availableModels = availableModels.filter(m => m.brandId === f.brandId);
+    }
+
+    return `
+      <div class="content-card" style="padding-bottom: 0;">
+        <div class="card-header-flex">
+          <div>
+            <h2 class="card-title">Equipamentos Registados (${totalFiltered} de ${state.equipments.length})</h2>
+            <p class="card-subtitle">Registo detalhado com n.º de série, património, marca, modelo e localização.</p>
+          </div>
+
+          <div class="toolbar-buttons">
+            <button class="btn btn-primary" onclick="window.openNewEquipmentModal()">
+              + Novo Equipamento
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="window.exportCSV()">
+              Exportar CSV
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="window.exportJSON()">
+              Exportar JSON
+            </button>
+          </div>
+        </div>
+
+        <!-- Barra de Ferramentas / Pesquisa e Filtros -->
+        <div class="toolbar-wrap">
+          <div class="search-input-box">
+            <span class="search-icon-inside"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+            <input
+              type="text"
+              id="equipment-search-input"
+              placeholder="Pesquisar por N.º Série, Património, Modelo, Colaborador..."
+              value="${escapeHtml(f.search)}"
+              oninput="window.handleEquipmentSearch(this.value)"
+            >
+          </div>
+
+          <div class="filters-row">
+            <!-- Filtro Marca -->
+            <select class="select-filter" onchange="window.handleEquipmentBrandFilter(this.value)">
+              <option value="all">Todas as Marcas (${state.brands.length})</option>
+              ${state.brands.map(b => `
+                <option value="${b.id}" ${f.brandId === b.id ? 'selected' : ''}>${escapeHtml(b.name)}</option>
+              `).join('')}
+            </select>
+
+            <!-- Filtro Modelo -->
+            <select class="select-filter" onchange="window.handleEquipmentModelFilter(this.value)">
+              <option value="all">Todos os Modelos (${availableModels.length})</option>
+              ${availableModels.map(m => `
+                <option value="${m.id}" ${f.modelId === m.id ? 'selected' : ''}>${escapeHtml(m.name)}</option>
+              `).join('')}
+            </select>
+
+            <!-- Filtro Estado -->
+            <select class="select-filter" onchange="window.handleEquipmentStatusFilter(this.value)">
+              <option value="all" ${f.status === 'all' ? 'selected' : ''}>Todos os Estados</option>
+              <option value="Em Uso" ${f.status === 'Em Uso' ? 'selected' : ''}>Em Uso</option>
+              <option value="Disponível" ${f.status === 'Disponível' ? 'selected' : ''}>Disponível</option>
+              <option value="Em Manutenção" ${f.status === 'Em Manutenção' ? 'selected' : ''}>Em Manutenção</option>
+              <option value="Em Reserva" ${f.status === 'Em Reserva' ? 'selected' : ''}>Em Reserva</option>
+            </select>
+
+            <!-- Filtro Categoria -->
+            <select class="select-filter" onchange="window.handleEquipmentCategoryFilter(this.value)">
+              <option value="all">Todas as Categorias</option>
+              ${uniqueCategories.map(c => `
+                <option value="${c}" ${f.category === c ? 'selected' : ''}>${escapeHtml(c)}</option>
+              `).join('')}
+            </select>
+
+            ${(f.search || f.brandId !== 'all' || f.modelId !== 'all' || f.category !== 'all' || f.status !== 'all') ? `
+              <button class="btn btn-secondary btn-sm" onclick="window.clearEquipmentFilters()">Limpar Filtros</button>
+            ` : ''}
+          </div>
+        </div>
+
+        <!-- Tabela de Equipamentos -->
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="sortable" onclick="window.handleSortEquipments('assetTag')">
+                  Património ${f.sortBy === 'assetTag' ? (f.sortOrder === 'asc' ? '▲' : '▼') : ''}
+                </th>
+                <th class="sortable" onclick="window.handleSortEquipments('serialNumber')">
+                  N.º de Série ${f.sortBy === 'serialNumber' ? (f.sortOrder === 'asc' ? '▲' : '▼') : ''}
+                </th>
+                <th class="sortable" onclick="window.handleSortEquipments('modelName')">
+                  Modelo ${f.sortBy === 'modelName' ? (f.sortOrder === 'asc' ? '▲' : '▼') : ''}
+                </th>
+                <th class="sortable" onclick="window.handleSortEquipments('brandName')">
+                  Marca ${f.sortBy === 'brandName' ? (f.sortOrder === 'asc' ? '▲' : '▼') : ''}
+                </th>
+                <th>Estado</th>
+                <th class="sortable" onclick="window.handleSortEquipments('assignedTo')">
+                  Atribuído a ${f.sortBy === 'assignedTo' ? (f.sortOrder === 'asc' ? '▲' : '▼') : ''}
+                </th>
+                <th>Localização</th>
+                <th class="sortable" onclick="window.handleSortEquipments('value')">
+                  Valor € ${f.sortBy === 'value' ? (f.sortOrder === 'asc' ? '▲' : '▼') : ''}
+                </th>
+                <th style="text-align: right;">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${paginated.length === 0 ? `
+                <tr>
+                  <td colspan="9">
+                    <div class="empty-state">
+                      <div class="empty-state-icon" style="font-size: 20px; font-weight: bold; color: var(--slate-400);">Sem Registos</div>
+                      <h4>Nenhum equipamento encontrado</h4>
+                      <p>Tente ajustar os termos de pesquisa ou filtros selecionados.</p>
+                    </div>
+                  </td>
+                </tr>
+              ` : paginated.map(e => {
+                const statusClass = e.status === 'Em Uso' ? 'status-em-uso' :
+                                    e.status === 'Disponível' ? 'status-disponivel' :
+                                    e.status === 'Em Manutenção' ? 'status-em-manutencao' : 'status-em-reserva';
+                return `
+                  <tr>
+                    <td>
+                      <span class="tag-badge">${escapeHtml(e.assetTag)}</span>
+                    </td>
+                    <td>
+                      <span class="sn-badge">${escapeHtml(e.serialNumber)}</span>
+                    </td>
+                    <td>
+                      <strong style="color: var(--dark-900); font-size: 13px;">${escapeHtml(e.modelName)}</strong>
+                      <div style="font-size: 11px; color: var(--slate-500);">${escapeHtml(e.category || '')}</div>
+                    </td>
+                    <td>
+                      <span style="font-weight: 600; font-size: 12px; color: var(--slate-700);">${escapeHtml(e.brandName)}</span>
+                    </td>
+                    <td>
+                      <span class="status-badge ${statusClass}" style="cursor: pointer;" title="Clique para mudar estado" onclick="window.openQuickStatusModal('${e.id}')">
+                        ${escapeHtml(e.status)}
+                      </span>
+                    </td>
+                    <td>
+                      <span style="font-size: 12px; color: var(--dark-800);">${escapeHtml(e.assignedTo || 'Não atribuído')}</span>
+                    </td>
+                    <td>
+                      <span style="font-size: 12px; color: var(--slate-600);">${escapeHtml(e.location || '-')}</span>
+                    </td>
+                    <td>
+                      <span style="font-weight: 600; font-size: 12px;">${formatCurrency(e.value)}</span>
+                    </td>
+                    <td style="text-align: right;">
+                      <div class="table-actions" style="justify-content: flex-end;">
+                        <button class="btn btn-secondary btn-sm" title="Ver Ficha Técnica" onclick="window.viewEquipmentDetail('${e.id}')">Ver</button>
+                        <button class="btn btn-secondary btn-sm" title="Editar Equipamento" onclick="window.openEditEquipmentModal('${e.id}')">Editar</button>
+                        <button class="btn btn-danger-outline btn-sm" title="Eliminar Equipamento" onclick="window.deleteEquipmentPrompt('${e.id}')">Eliminar</button>
+                      </div>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Barra de Paginação -->
+        <div class="pagination-bar">
+          <div>
+            Mostrando <strong>${paginated.length}</strong> de <strong>${totalFiltered}</strong> equipamentos
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span>Itens por página:</span>
+              <select class="select-filter" style="padding: 4px 8px; font-size: 12px;" onchange="window.handlePageSizeChange(this.value)">
+                <option value="10" ${f.pageSize === 10 ? 'selected' : ''}>10</option>
+                <option value="25" ${f.pageSize === 25 ? 'selected' : ''}>25</option>
+                <option value="50" ${f.pageSize === 50 ? 'selected' : ''}>50</option>
+                <option value="100" ${f.pageSize === 100 ? 'selected' : ''}>100</option>
+                <option value="all" ${f.pageSize === 'all' ? 'selected' : ''}>Todos (200)</option>
+              </select>
+            </div>
+
+            ${f.pageSize !== 'all' ? `
+              <div class="pagination-controls">
+                <button class="btn btn-secondary btn-sm" ${f.page <= 1 ? 'disabled' : ''} onclick="window.changePage(${f.page - 1})">◀ Anterior</button>
+                <span style="font-weight: 600; padding: 0 4px;">Pág. ${f.page} de ${totalPages}</span>
+                <button class="btn btn-secondary btn-sm" ${f.page >= totalPages ? 'disabled' : ''} onclick="window.changePage(${f.page + 1})">Seguinte ▶</button>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ==========================================================
+  // ABA: MODELOS (50 MODELOS)
+  // ==========================================================
+  function renderModelsView() {
+    const f = state.modelFilters;
+
+    let items = [...state.models];
+
+    if (f.search) {
+      const s = f.search.toLowerCase().trim();
+      items = items.filter(m =>
+        m.name.toLowerCase().includes(s) ||
+        m.brandName.toLowerCase().includes(s) ||
+        (m.specs && m.specs.toLowerCase().includes(s)) ||
+        (m.category && m.category.toLowerCase().includes(s))
+      );
+    }
+
+    if (f.brandId !== 'all') {
+      items = items.filter(m => m.brandId === f.brandId);
+    }
+
+    return `
+      <div class="content-card">
+        <div class="card-header-flex">
+          <div>
+            <h2 class="card-title">Catálogo de Modelos (${items.length} de ${state.models.length})</h2>
+            <p class="card-subtitle">50 Modelos no total registados no sistema distribuídos pelas 5 marcas principais.</p>
+          </div>
+
+          <button class="btn btn-primary" onclick="window.openNewModelModal()">
+            + Novo Modelo
+          </button>
+        </div>
+
+        <!-- Filtros de Modelos -->
+        <div class="toolbar-wrap">
+          <div class="search-input-box">
+            <span class="search-icon-inside"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+            <input
+              type="text"
+              placeholder="Pesquisar modelos por nome, processador, especificações..."
+              value="${escapeHtml(f.search)}"
+              oninput="window.handleModelSearch(this.value)"
+            >
+          </div>
+
+          <div class="filters-row">
+            <select class="select-filter" onchange="window.handleModelBrandFilter(this.value)">
+              <option value="all">Todas as Marcas (${state.brands.length})</option>
+              ${state.brands.map(b => `
+                <option value="${b.id}" ${f.brandId === b.id ? 'selected' : ''}>${escapeHtml(b.name)}</option>
+              `).join('')}
+            </select>
+
+            ${(f.search || f.brandId !== 'all') ? `
+              <button class="btn btn-secondary btn-sm" onclick="window.clearModelFilters()">Limpar Filtros</button>
+            ` : ''}
+          </div>
+        </div>
+
+        <!-- Grid de Modelos -->
+        <div class="models-grid">
+          ${items.map(m => {
+            const countUnits = state.equipments.filter(e => e.modelId === m.id).length;
+            const inUseCount = state.equipments.filter(e => e.modelId === m.id && e.status === 'Em Uso').length;
+            const availableCount = state.equipments.filter(e => e.modelId === m.id && e.status === 'Disponível').length;
+
+            return `
+              <div class="model-card">
+                <div>
+                  <div class="model-card-top">
+                    <div>
+                      <h3 class="model-card-title">${escapeHtml(m.name)}</h3>
+                      <div style="font-size: 11px; color: var(--slate-500); margin-top: 2px;">${escapeHtml(m.type || m.category)}</div>
+                    </div>
+                    <span class="model-brand-pill">${escapeHtml(m.brandName)}</span>
+                  </div>
+
+                  <div class="model-specs">
+                    ${escapeHtml(m.specs || 'Sem especificações')}
+                  </div>
+                </div>
+
+                <div class="model-card-footer">
+                  <div>
+                    <div style="font-weight: 700; color: var(--dark-900);">${countUnits} unidades</div>
+                    <div style="color: var(--slate-500); font-size: 11px;">${inUseCount} em uso • ${availableCount} stock</div>
+                  </div>
+
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-weight: 700; color: var(--primary);">${formatCurrency(m.basePrice)}</span>
+                    <button class="btn btn-secondary btn-sm" title="Editar Modelo" onclick="window.openEditModelModal('${m.id}')">Editar</button>
+                    <button class="btn btn-danger-outline btn-sm" title="Eliminar Modelo" onclick="window.deleteModelPrompt('${m.id}')">Eliminar</button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // ==========================================================
+  // ABA: MARCAS (5 MARCAS)
+  // ==========================================================
+  function renderBrandsView() {
+    return `
+      <div class="content-card">
+        <div class="card-header-flex">
+          <div>
+            <h2 class="card-title">Marcas Oficiais do Inventário (${state.brands.length})</h2>
+            <p class="card-subtitle">Fabricantes globais homologados e integrados com os seus respetivos modelos e equipamentos.</p>
+          </div>
+
+          <button class="btn btn-primary" onclick="window.openNewBrandModal()">
+            + Nova Marca
+          </button>
+        </div>
+
+        <div class="brands-grid">
+          ${state.brands.map(b => {
+            const modelsOfBrand = state.models.filter(m => m.brandId === b.id);
+            const equipmentsOfBrand = state.equipments.filter(e => e.brandId === b.id);
+            const totalValue = equipmentsOfBrand.reduce((sum, e) => sum + (Number(e.value) || 0), 0);
+            const codeClass = b.code ? b.code.toLowerCase() : 'dell';
+
+            return `
+              <div class="brand-card">
+                <div class="brand-card-header">
+                  <div class="brand-card-meta">
+                    <div class="brand-card-avatar ${codeClass}">${escapeHtml(b.code || b.name.slice(0, 3))}</div>
+                    <div class="brand-card-title">
+                      <h3>${escapeHtml(b.name)}</h3>
+                      <p>${escapeHtml(b.country || 'Internacional')} • ${escapeHtml(b.category || 'TI')}</p>
+                    </div>
+                  </div>
+
+                  <div style="display: flex; gap: 6px;">
+                    <button class="btn btn-secondary btn-sm" title="Editar Marca" onclick="window.openEditBrandModal('${b.id}')">Editar</button>
+                    <button class="btn btn-danger-outline btn-sm" title="Eliminar Marca" onclick="window.deleteBrandPrompt('${b.id}')">Eliminar</button>
+                  </div>
+                </div>
+
+                <div class="brand-desc">
+                  ${escapeHtml(b.description || 'Fabricante parceiro oficial.')}
+                </div>
+
+                <div class="brand-kpi-row">
+                  <div class="brand-kpi-box">
+                    <span>Modelos</span>
+                    <strong>${modelsOfBrand.length}</strong>
+                  </div>
+                  <div class="brand-kpi-box">
+                    <span>Equipamentos</span>
+                    <strong>${equipmentsOfBrand.length}</strong>
+                  </div>
+                  <div class="brand-kpi-box">
+                    <span>Valor Ativos</span>
+                    <strong style="color: var(--primary); font-size: 14px;">${formatCurrency(totalValue)}</strong>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--slate-500); border-top: 1px solid var(--slate-100); padding-top: 12px;">
+                  <div>
+                    ${b.website ? `<a href="${escapeHtml(b.website)}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 500;">Website Oficial &rarr;</a>` : ''}
+                  </div>
+                  <button class="btn btn-secondary btn-sm" onclick="window.filterByBrand('${b.id}')">
+                    Ver ${equipmentsOfBrand.length} Equipamentos &rarr;
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // ==========================================================
+  // ABA: DEFINIÇÕES & GESTÃO DE DADOS
+  // ==========================================================
+  function renderSettingsView() {
+    return `
+      <div class="content-card">
+        <h2 class="card-title" style="margin-bottom: 8px;">Gestão de Dados e Cópia de Segurança</h2>
+        <p class="card-subtitle" style="margin-bottom: 24px;">Operações de restauro, exportação e importação de ficheiros JSON.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+          <!-- Restauro de Fábrica (200 Equipamentos) -->
+          <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); padding: 20px;">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">Restaurar Inventário Original</h3>
+            <p style="font-size: 13px; color: var(--slate-600); margin-bottom: 16px;">
+              Repõe o inventário exatamente para os <strong>200 equipamentos</strong> de fábrica (5 Marcas e 50 Modelos padronizados com números de série e património).
+            </p>
+            <button class="btn btn-danger-outline" onclick="window.resetDatabasePrompt()">
+              Restaurar 200 Equipamentos Iniciais
+            </button>
+          </div>
+
+          <!-- Exportar Backup -->
+          <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); padding: 20px;">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">Exportar Base de Dados</h3>
+            <p style="font-size: 13px; color: var(--slate-600); margin-bottom: 16px;">
+              Transfira um ficheiro JSON completo com todas as marcas, modelos e equipamentos atuais.
+            </p>
+            <button class="btn btn-secondary" onclick="window.exportJSON()">
+              Descarregar Backup Completo (JSON)
+            </button>
+          </div>
+
+          <!-- Importar Backup -->
+          <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); padding: 20px;">
+            <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 6px;">Importar Base de Dados</h3>
+            <p style="font-size: 13px; color: var(--slate-600); margin-bottom: 16px;">
+              Restaure ou carregue uma base de dados externa em formato JSON.
+            </p>
+            <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="window.handleImportFile(event)">
+            <button class="btn btn-secondary" onclick="document.getElementById('import-file-input').click()">
+              Selecionar Ficheiro JSON...
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ==========================================================
+  // EVENTOS E FILTROS DINÂMICOS
+  // ==========================================================
+  function bindTabEvents() {
+    // Ligações automáticas
+  }
+
+  window.setTab = setTab;
+
+  window.handleEquipmentSearch = (val) => {
+    state.equipmentFilters.search = val;
+    state.equipmentFilters.page = 1;
+    render();
+  };
+
+  window.handleEquipmentBrandFilter = (brandId) => {
+    state.equipmentFilters.brandId = brandId;
+    state.equipmentFilters.modelId = 'all'; // reinicia modelo ao mudar marca
+    state.equipmentFilters.page = 1;
+    render();
+  };
+
+  window.handleEquipmentModelFilter = (modelId) => {
+    state.equipmentFilters.modelId = modelId;
+    state.equipmentFilters.page = 1;
+    render();
+  };
+
+  window.handleEquipmentStatusFilter = (status) => {
+    state.equipmentFilters.status = status;
+    state.equipmentFilters.page = 1;
+    render();
+  };
+
+  window.handleEquipmentCategoryFilter = (category) => {
+    state.equipmentFilters.category = category;
+    state.equipmentFilters.page = 1;
+    render();
+  };
+
+  window.clearEquipmentFilters = () => {
+    state.equipmentFilters.search = '';
+    state.equipmentFilters.brandId = 'all';
+    state.equipmentFilters.modelId = 'all';
+    state.equipmentFilters.category = 'all';
+    state.equipmentFilters.status = 'all';
+    state.equipmentFilters.page = 1;
+    render();
+  };
+
+  window.handleSortEquipments = (col) => {
+    if (state.equipmentFilters.sortBy === col) {
+      state.equipmentFilters.sortOrder = state.equipmentFilters.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
+      state.equipmentFilters.sortBy = col;
+      state.equipmentFilters.sortOrder = 'asc';
+    }
+    render();
+  };
+
+  window.handlePageSizeChange = (val) => {
+    state.equipmentFilters.pageSize = val === 'all' ? 'all' : parseInt(val, 10);
+    state.equipmentFilters.page = 1;
+    render();
+  };
+
+  window.changePage = (p) => {
+    state.equipmentFilters.page = p;
+    render();
+  };
+
+  window.filterByBrand = (brandId) => {
+    state.equipmentFilters.brandId = brandId;
+    state.equipmentFilters.modelId = 'all';
+    state.equipmentFilters.page = 1;
+    setTab('equipments');
+  };
+
+  window.handleModelSearch = (val) => {
+    state.modelFilters.search = val;
+    render();
+  };
+
+  window.handleModelBrandFilter = (brandId) => {
+    state.modelFilters.brandId = brandId;
+    render();
+  };
+
+  window.clearModelFilters = () => {
+    state.modelFilters.search = '';
+    state.modelFilters.brandId = 'all';
+    render();
+  };
+
+  // ==========================================================
+  // MODAL: NOVO / EDITAR EQUIPAMENTO
+  // ==========================================================
+  window.openNewEquipmentModal = () => {
+    const defaultBrand = state.brands[0] ? state.brands[0].id : '';
+    const filteredModels = state.models.filter(m => m.brandId === defaultBrand);
+    const defaultModel = filteredModels[0] || state.models[0];
+
+    // Sugere próximo número de património
+    const maxNum = state.equipments.reduce((max, e) => {
+      const m = e.assetTag && e.assetTag.match(/PAT-(\d+)/);
+      return m ? Math.max(max, parseInt(m[1], 10)) : max;
+    }, 0);
+    const suggestedTag = `PAT-${String(maxNum + 1).padStart(4, '0')}`;
+
+    // Sugere número de série
+    const brandCode = state.brands[0] ? state.brands[0].code : 'IT';
+    const rand = Math.floor(1000 + Math.random() * 9000);
+    const suggestedSN = `SN-${brandCode}-${new Date().getFullYear().toString().slice(-2)}-${rand}`;
+
+    const html = `
+      <div class="modal-header">
+        <h2>Registar Novo Equipamento</h2>
+        <button class="btn-close-modal" onclick="window.closeModal()">&times;</button>
+      </div>
+
+      <form id="equipment-form" onsubmit="window.saveEquipmentForm(event, null)">
+        <div class="form-grid">
+          <!-- Marca -->
+          <div class="form-group">
+            <label class="form-label">Marca *</label>
+            <select class="form-select" id="form-brand-select" onchange="window.updateModelOptionsInForm(this.value)" required>
+              ${state.brands.map(b => `<option value="${b.id}">${escapeHtml(b.name)}</option>`).join('')}
+            </select>
+          </div>
+
+          <!-- Modelo -->
+          <div class="form-group">
+            <label class="form-label">Modelo *</label>
+            <select class="form-select" id="form-model-select" onchange="window.updateModelSpecsInForm(this.value)" required>
+              ${filteredModels.map(m => `<option value="${m.id}">${escapeHtml(m.name)}</option>`).join('')}
+            </select>
+          </div>
+
+          <!-- Património -->
+          <div class="form-group">
+            <label class="form-label">Etiqueta de Património *</label>
+            <input type="text" class="form-input" id="form-asset-tag" value="${suggestedTag}" required>
+          </div>
+
+          <!-- Número de Série -->
+          <div class="form-group">
+            <label class="form-label">Número de Série *</label>
+            <input type="text" class="form-input" id="form-serial-number" value="${suggestedSN}" required>
+          </div>
+
+          <!-- Estado -->
+          <div class="form-group">
+            <label class="form-label">Estado Operacional *</label>
+            <select class="form-select" id="form-status" required>
+              <option value="Disponível">Disponível em Stock</option>
+              <option value="Em Uso">Em Uso</option>
+              <option value="Em Manutenção">Em Manutenção</option>
+              <option value="Em Reserva">Em Reserva</option>
+            </select>
+          </div>
+
+          <!-- Valor de Aquisição -->
+          <div class="form-group">
+            <label class="form-label">Valor (€)</label>
+            <input type="number" step="0.01" class="form-input" id="form-value" value="${defaultModel ? defaultModel.basePrice : 0}">
+          </div>
+
+          <!-- Atribuído a -->
+          <div class="form-group">
+            <label class="form-label">Atribuído a (Colaborador / Departamento)</label>
+            <input type="text" class="form-input" id="form-assigned" placeholder="Ex: Diogo Costa (TI)">
+          </div>
+
+          <!-- Localização -->
+          <div class="form-group">
+            <label class="form-label">Localização Física</label>
+            <input type="text" class="form-input" id="form-location" value="Armazém Central - Lisboa">
+          </div>
+
+          <!-- Data de Aquisição -->
+          <div class="form-group">
+            <label class="form-label">Data de Aquisição</label>
+            <input type="date" class="form-input" id="form-date" value="${new Date().toISOString().split('T')[0]}">
+          </div>
+
+          <!-- Especificações do modelo (informativo) -->
+          <div class="form-group form-full">
+            <label class="form-label">Notas e Observações</label>
+            <textarea class="form-textarea" id="form-notes" placeholder="Detalhes adicionais sobre o equipamento ou configuração especial..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="window.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Gravar Equipamento</button>
+        </div>
+      </form>
+    `;
+
+    openModal(html);
+  };
+
+  window.openEditEquipmentModal = (id) => {
+    const item = state.equipments.find(e => e.id === id);
+    if (!item) return;
+
+    const brandModels = state.models.filter(m => m.brandId === item.brandId);
+
+    const html = `
+      <div class="modal-header">
+        <h2>Editar Equipamento: ${escapeHtml(item.assetTag)}</h2>
+        <button class="btn-close-modal" onclick="window.closeModal()">&times;</button>
+      </div>
+
+      <form id="equipment-form" onsubmit="window.saveEquipmentForm(event, '${item.id}')">
+        <div class="form-grid">
+          <!-- Marca -->
+          <div class="form-group">
+            <label class="form-label">Marca *</label>
+            <select class="form-select" id="form-brand-select" onchange="window.updateModelOptionsInForm(this.value)" required>
+              ${state.brands.map(b => `<option value="${b.id}" ${b.id === item.brandId ? 'selected' : ''}>${escapeHtml(b.name)}</option>`).join('')}
+            </select>
+          </div>
+
+          <!-- Modelo -->
+          <div class="form-group">
+            <label class="form-label">Modelo *</label>
+            <select class="form-select" id="form-model-select" required>
+              ${brandModels.map(m => `<option value="${m.id}" ${m.id === item.modelId ? 'selected' : ''}>${escapeHtml(m.name)}</option>`).join('')}
+            </select>
+          </div>
+
+          <!-- Património -->
+          <div class="form-group">
+            <label class="form-label">Etiqueta de Património *</label>
+            <input type="text" class="form-input" id="form-asset-tag" value="${escapeHtml(item.assetTag)}" required>
+          </div>
+
+          <!-- Número de Série -->
+          <div class="form-group">
+            <label class="form-label">Número de Série *</label>
+            <input type="text" class="form-input" id="form-serial-number" value="${escapeHtml(item.serialNumber)}" required>
+          </div>
+
+          <!-- Estado -->
+          <div class="form-group">
+            <label class="form-label">Estado Operacional *</label>
+            <select class="form-select" id="form-status" required>
+              <option value="Em Uso" ${item.status === 'Em Uso' ? 'selected' : ''}>Em Uso</option>
+              <option value="Disponível" ${item.status === 'Disponível' ? 'selected' : ''}>Disponível</option>
+              <option value="Em Manutenção" ${item.status === 'Em Manutenção' ? 'selected' : ''}>Em Manutenção</option>
+              <option value="Em Reserva" ${item.status === 'Em Reserva' ? 'selected' : ''}>Em Reserva</option>
+            </select>
+          </div>
+
+          <!-- Valor -->
+          <div class="form-group">
+            <label class="form-label">Valor (€)</label>
+            <input type="number" step="0.01" class="form-input" id="form-value" value="${item.value || 0}">
+          </div>
+
+          <!-- Atribuído a -->
+          <div class="form-group">
+            <label class="form-label">Atribuído a</label>
+            <input type="text" class="form-input" id="form-assigned" value="${escapeHtml(item.assignedTo || '')}">
+          </div>
+
+          <!-- Localização -->
+          <div class="form-group">
+            <label class="form-label">Localização Física</label>
+            <input type="text" class="form-input" id="form-location" value="${escapeHtml(item.location || '')}">
+          </div>
+
+          <!-- Data de Aquisição -->
+          <div class="form-group">
+            <label class="form-label">Data de Aquisição</label>
+            <input type="date" class="form-input" id="form-date" value="${item.acquisitionDate || ''}">
+          </div>
+
+          <!-- Notas -->
+          <div class="form-group form-full">
+            <label class="form-label">Notas e Observações</label>
+            <textarea class="form-textarea" id="form-notes">${escapeHtml(item.notes || '')}</textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="window.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Alterações</button>
+        </div>
+      </form>
+    `;
+
+    openModal(html);
+  };
+
+  window.updateModelOptionsInForm = (brandId) => {
+    const modelSelect = document.getElementById('form-model-select');
+    if (!modelSelect) return;
+
+    const filtered = state.models.filter(m => m.brandId === brandId);
+    modelSelect.innerHTML = filtered.map(m => `<option value="${m.id}">${escapeHtml(m.name)}</option>`).join('');
+
+    if (filtered[0]) {
+      window.updateModelSpecsInForm(filtered[0].id);
+    }
+  };
+
+  window.updateModelSpecsInForm = (modelId) => {
+    const model = state.models.find(m => m.id === modelId);
+    const valInput = document.getElementById('form-value');
+    if (model && valInput && !valInput.value) {
+      valInput.value = model.basePrice;
+    }
+  };
+
+  window.saveEquipmentForm = async (e, existingId) => {
+    e.preventDefault();
+
+    const modelId = document.getElementById('form-model-select').value;
+    const model = state.models.find(m => m.id === modelId);
+    if (!model) {
+      alert('Selecione um modelo válido.');
+      return;
+    }
+
+    const payload = {
+      modelId: model.id,
+      assetTag: document.getElementById('form-asset-tag').value.trim(),
+      serialNumber: document.getElementById('form-serial-number').value.trim(),
+      status: document.getElementById('form-status').value,
+      value: parseFloat(document.getElementById('form-value').value) || 0,
+      assignedTo: document.getElementById('form-assigned').value.trim(),
+      location: document.getElementById('form-location').value.trim(),
+      acquisitionDate: document.getElementById('form-date').value,
+      notes: document.getElementById('form-notes').value.trim()
+    };
+
+    try {
+      if (existingId) {
+        await apiFetch(`/equipments/${existingId}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+        showToast('Equipamento atualizado com sucesso!', 'success');
+      } else {
+        await apiFetch('/equipments', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        showToast('Equipamento registado com sucesso!', 'success');
+      }
+
+      closeModal();
+      await loadAllData();
+      syncLocalBackup();
+    } catch (err) {
+      // Fallback local se estiver offline
+      if (existingId) {
+        const idx = state.equipments.findIndex(e => e.id === existingId);
+        if (idx !== -1) {
+          state.equipments[idx] = { ...state.equipments[idx], ...payload, modelName: model.name, brandId: model.brandId, brandName: model.brandName, category: model.category, specs: model.specs, updatedAt: new Date().toISOString() };
+        }
+        showToast('Equipamento atualizado (Modo Local)!', 'success');
+      } else {
+        const newEq = {
+          id: `eq-${Date.now()}`,
+          ...payload,
+          brandId: model.brandId,
+          brandName: model.brandName,
+          modelName: model.name,
+          category: model.category,
+          specs: model.specs,
+          updatedAt: new Date().toISOString()
+        };
+        state.equipments.unshift(newEq);
+        showToast('Equipamento registado (Modo Local)!', 'success');
+      }
+      closeModal();
+      syncLocalBackup();
+      render();
+    }
+  };
+
+  // ==========================================================
+  // MODAL: FICHA TÉCNICA DO EQUIPAMENTO
+  // ==========================================================
+  window.viewEquipmentDetail = (id) => {
+    const item = state.equipments.find(e => e.id === id);
+    if (!item) return;
+
+    const brand = state.brands.find(b => b.id === item.brandId);
+    const model = state.models.find(m => m.id === item.modelId);
+
+    const statusClass = item.status === 'Em Uso' ? 'status-em-uso' :
+                        item.status === 'Disponível' ? 'status-disponivel' :
+                        item.status === 'Em Manutenção' ? 'status-em-manutencao' : 'status-em-reserva';
+
+    const html = `
+      <div class="modal-header">
+        <div>
+          <h2>Ficha Técnica do Ativo</h2>
+          <span style="font-size: 13px; color: var(--slate-500);">${escapeHtml(item.assetTag)} • ${escapeHtml(item.serialNumber)}</span>
+        </div>
+        <button class="btn-close-modal" onclick="window.closeModal()">&times;</button>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span>Património</span>
+          <strong>${escapeHtml(item.assetTag)}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Número de Série</span>
+          <strong>${escapeHtml(item.serialNumber)}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Marca</span>
+          <strong>${escapeHtml(item.brandName)}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Modelo</span>
+          <strong>${escapeHtml(item.modelName)}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Categoria</span>
+          <strong>${escapeHtml(item.category)}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Estado Operacional</span>
+          <div><span class="status-badge ${statusClass}">${escapeHtml(item.status)}</span></div>
+        </div>
+
+        <div class="detail-item">
+          <span>Atribuído a</span>
+          <strong>${escapeHtml(item.assignedTo || 'Não atribuído')}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Localização Física</span>
+          <strong>${escapeHtml(item.location || 'Não especificada')}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Data de Registo</span>
+          <strong>${formatDate(item.acquisitionDate)}</strong>
+        </div>
+
+        <div class="detail-item">
+          <span>Valor de Aquisição</span>
+          <strong style="color: var(--primary);">${formatCurrency(item.value)}</strong>
+        </div>
+      </div>
+
+      <div class="detail-item" style="margin-bottom: 16px;">
+        <span>Especificações Técnicas</span>
+        <div style="font-size: 13px; line-height: 1.5; margin-top: 4px; color: var(--dark-800);">
+          ${escapeHtml(item.specs || (model ? model.specs : 'Não detalhado'))}
+        </div>
+      </div>
+
+      ${item.notes ? `
+        <div class="detail-item" style="margin-bottom: 16px;">
+          <span>Observações</span>
+          <div style="font-size: 13px; margin-top: 4px; color: var(--dark-800);">${escapeHtml(item.notes)}</div>
+        </div>
+      ` : ''}
+
+      <!-- Código de Barras / QR Code Simulado em SVG -->
+      <div class="barcode-box">
+        <svg width="220" height="48" viewBox="0 0 220 48" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="4" height="40" fill="#0f172a" />
+          <rect x="8" y="0" width="2" height="40" fill="#0f172a" />
+          <rect x="14" y="0" width="6" height="40" fill="#0f172a" />
+          <rect x="24" y="0" width="3" height="40" fill="#0f172a" />
+          <rect x="30" y="0" width="8" height="40" fill="#0f172a" />
+          <rect x="42" y="0" width="2" height="40" fill="#0f172a" />
+          <rect x="48" y="0" width="5" height="40" fill="#0f172a" />
+          <rect x="58" y="0" width="2" height="40" fill="#0f172a" />
+          <rect x="64" y="0" width="7" height="40" fill="#0f172a" />
+          <rect x="76" y="0" width="4" height="40" fill="#0f172a" />
+          <rect x="84" y="0" width="2" height="40" fill="#0f172a" />
+          <rect x="90" y="0" width="8" height="40" fill="#0f172a" />
+          <rect x="102" y="0" width="3" height="40" fill="#0f172a" />
+          <rect x="110" y="0" width="5" height="40" fill="#0f172a" />
+          <rect x="120" y="0" width="2" height="40" fill="#0f172a" />
+          <rect x="126" y="0" width="6" height="40" fill="#0f172a" />
+          <rect x="136" y="0" width="4" height="40" fill="#0f172a" />
+          <rect x="144" y="0" width="2" height="40" fill="#0f172a" />
+          <rect x="150" y="0" width="7" height="40" fill="#0f172a" />
+          <rect x="162" y="0" width="3" height="40" fill="#0f172a" />
+          <rect x="170" y="0" width="5" height="40" fill="#0f172a" />
+          <rect x="180" y="0" width="2" height="40" fill="#0f172a" />
+          <rect x="186" y="0" width="8" height="40" fill="#0f172a" />
+          <rect x="198" y="0" width="4" height="40" fill="#0f172a" />
+          <rect x="206" y="0" width="2" height="40" fill="#0f172a" />
+          <rect x="212" y="0" width="6" height="40" fill="#0f172a" />
+        </svg>
+        <div style="font-family: var(--font-mono); font-size: 11px; margin-top: 4px; color: var(--slate-600);">${escapeHtml(item.assetTag)} * ${escapeHtml(item.serialNumber)}</div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="window.print()">Imprimir Ficha</button>
+        <button type="button" class="btn btn-secondary" onclick="window.openEditEquipmentModal('${item.id}')">Editar</button>
+        <button type="button" class="btn btn-primary" onclick="window.closeModal()">Fechar</button>
+      </div>
+    `;
+
+    openModal(html);
+  };
+
+  // ==========================================================
+  // MODAL: ALTERAÇÃO RÁPIDA DE ESTADO
+  // ==========================================================
+  window.openQuickStatusModal = (id) => {
+    const item = state.equipments.find(e => e.id === id);
+    if (!item) return;
+
+    const html = `
+      <div class="modal-header">
+        <h2>Alterar Estado do Equipamento</h2>
+        <button class="btn-close-modal" onclick="window.closeModal()">&times;</button>
+      </div>
+
+      <p style="font-size: 13px; color: var(--slate-600); margin-bottom: 16px;">
+        Selecione o novo estado para <strong>${escapeHtml(item.assetTag)} (${escapeHtml(item.modelName)})</strong>:
+      </p>
+
+      <form onsubmit="window.saveQuickStatus(event, '${item.id}')">
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label">Novo Estado</label>
+          <select class="form-select" id="quick-status-select" required>
+            <option value="Em Uso" ${item.status === 'Em Uso' ? 'selected' : ''}>Em Uso</option>
+            <option value="Disponível" ${item.status === 'Disponível' ? 'selected' : ''}>Disponível em Stock</option>
+            <option value="Em Manutenção" ${item.status === 'Em Manutenção' ? 'selected' : ''}>Em Manutenção Técnica</option>
+            <option value="Em Reserva" ${item.status === 'Em Reserva' ? 'selected' : ''}>Em Reserva (Hot-Spare)</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label">Atribuído a</label>
+          <input type="text" class="form-input" id="quick-assigned" value="${escapeHtml(item.assignedTo || '')}">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Localização</label>
+          <input type="text" class="form-input" id="quick-location" value="${escapeHtml(item.location || '')}">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="window.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Atualizar Estado</button>
+        </div>
+      </form>
+    `;
+
+    openModal(html);
+  };
+
+  window.saveQuickStatus = async (e, id) => {
+    e.preventDefault();
+    const newStatus = document.getElementById('quick-status-select').value;
+    const assignedTo = document.getElementById('quick-assigned').value.trim();
+    const location = document.getElementById('quick-location').value.trim();
+
+    try {
+      await apiFetch(`/equipments/${id}/status`, {
+        method: 'POST',
+        body: JSON.stringify({ status: newStatus, assignedTo, location })
+      });
+      showToast(`Estado atualizado para '${newStatus}'!`, 'success');
+      closeModal();
+      await loadAllData();
+      syncLocalBackup();
+    } catch (err) {
+      alert('Erro: ' + err.message);
+    }
+  };
+
+  // ==========================================================
+  // ELIMINAR EQUIPAMENTO
+  // ==========================================================
+  window.deleteEquipmentPrompt = async (id) => {
+    const item = state.equipments.find(e => e.id === id);
+    if (!item) return;
+
+    if (!confirm(`Deseja mesmo eliminar o equipamento ${item.assetTag} (${item.modelName})?`)) {
+      return;
+    }
+
+    try {
+      await apiFetch(`/equipments/${id}`, { method: 'DELETE' });
+      showToast('Equipamento eliminado com sucesso!', 'success');
+      await loadAllData();
+      syncLocalBackup();
+    } catch (err) {
+      alert('Erro ao eliminar: ' + err.message);
+    }
+  };
+
+  // ==========================================================
+  // MODAL: NOVO / EDITAR MODELO
+  // ==========================================================
+  window.openNewModelModal = () => {
+    const html = `
+      <div class="modal-header">
+        <h2>Registar Novo Modelo TI</h2>
+        <button class="btn-close-modal" onclick="window.closeModal()">&times;</button>
+      </div>
+
+      <form onsubmit="window.saveModelForm(event, null)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Marca Fabricante *</label>
+            <select class="form-select" id="model-brand-id" required>
+              ${state.brands.map(b => `<option value="${b.id}">${escapeHtml(b.name)}</option>`).join('')}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nome do Modelo *</label>
+            <input type="text" class="form-input" id="model-name" placeholder="Ex: Latitude 5540" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Categoria *</label>
+            <select class="form-select" id="model-category" required>
+              <option value="Portáteis">Portáteis</option>
+              <option value="Desktops">Desktops</option>
+              <option value="Monitores">Monitores</option>
+              <option value="Servidores">Servidores</option>
+              <option value="Workstations">Workstations</option>
+              <option value="Redes">Redes</option>
+              <option value="Tablets">Tablets</option>
+              <option value="Impressoras">Impressoras</option>
+              <option value="Telecomunicações">Telecomunicações</option>
+              <option value="Acessórios">Acessórios</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Preço Base de Referência (€)</label>
+            <input type="number" step="0.01" class="form-input" id="model-price" value="1000.00">
+          </div>
+
+          <div class="form-group form-full">
+            <label class="form-label">Especificações Técnicas</label>
+            <textarea class="form-textarea" id="model-specs" placeholder="Ex: Processador, Memória RAM, Armazenamento, Portas e Ecrã..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="window.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Gravar Modelo</button>
+        </div>
+      </form>
+    `;
+
+    openModal(html);
+  };
+
+  window.openEditModelModal = (id) => {
+    const item = state.models.find(m => m.id === id);
+    if (!item) return;
+
+    const html = `
+      <div class="modal-header">
+        <h2>Editar Modelo: ${escapeHtml(item.name)}</h2>
+        <button class="btn-close-modal" onclick="window.closeModal()">&times;</button>
+      </div>
+
+      <form onsubmit="window.saveModelForm(event, '${item.id}')">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Marca Fabricante *</label>
+            <select class="form-select" id="model-brand-id" required>
+              ${state.brands.map(b => `<option value="${b.id}" ${b.id === item.brandId ? 'selected' : ''}>${escapeHtml(b.name)}</option>`).join('')}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nome do Modelo *</label>
+            <input type="text" class="form-input" id="model-name" value="${escapeHtml(item.name)}" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Categoria *</label>
+            <input type="text" class="form-input" id="model-category" value="${escapeHtml(item.category || '')}" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Preço Base de Referência (€)</label>
+            <input type="number" step="0.01" class="form-input" id="model-price" value="${item.basePrice || 0}">
+          </div>
+
+          <div class="form-group form-full">
+            <label class="form-label">Especificações Técnicas</label>
+            <textarea class="form-textarea" id="model-specs">${escapeHtml(item.specs || '')}</textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="window.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Alterações</button>
+        </div>
+      </form>
+    `;
+
+    openModal(html);
+  };
+
+  window.saveModelForm = async (e, existingId) => {
+    e.preventDefault();
+    const payload = {
+      brandId: document.getElementById('model-brand-id').value,
+      name: document.getElementById('model-name').value.trim(),
+      category: document.getElementById('model-category').value.trim(),
+      basePrice: parseFloat(document.getElementById('model-price').value) || 0,
+      specs: document.getElementById('model-specs').value.trim()
+    };
+
+    try {
+      if (existingId) {
+        await apiFetch(`/models/${existingId}`, { method: 'PUT', body: JSON.stringify(payload) });
+        showToast('Modelo atualizado com sucesso!', 'success');
+      } else {
+        await apiFetch('/models', { method: 'POST', body: JSON.stringify(payload) });
+        showToast('Novo modelo registado com sucesso!', 'success');
+      }
+
+      closeModal();
+      await loadAllData();
+      syncLocalBackup();
+    } catch (err) {
+      alert('Erro ao gravar modelo: ' + err.message);
+    }
+  };
+
+  window.deleteModelPrompt = async (id) => {
+    const item = state.models.find(m => m.id === id);
+    if (!item) return;
+
+    const count = state.equipments.filter(e => e.modelId === id).length;
+    if (count > 0) {
+      alert(`Não é possível eliminar o modelo '${item.name}' porque existem ${count} equipamentos associados a ele.`);
+      return;
+    }
+
+    if (!confirm(`Deseja eliminar o modelo '${item.name}'?`)) return;
+
+    try {
+      await apiFetch(`/models/${id}`, { method: 'DELETE' });
+      showToast('Modelo eliminado!', 'success');
+      await loadAllData();
+      syncLocalBackup();
+    } catch (err) {
+      alert('Erro: ' + err.message);
+    }
+  };
+
+  // ==========================================================
+  // MODAL: NOVO / EDITAR MARCA
+  // ==========================================================
+  window.openNewBrandModal = () => {
+    const html = `
+      <div class="modal-header">
+        <h2>Registar Nova Marca</h2>
+        <button class="btn-close-modal" onclick="window.closeModal()">&times;</button>
+      </div>
+
+      <form onsubmit="window.saveBrandForm(event, null)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nome da Marca *</label>
+            <input type="text" class="form-input" id="brand-name" placeholder="Ex: Asus, Acer, Sony..." required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Sigla / Código (3-4 letras) *</label>
+            <input type="text" class="form-input" id="brand-code" placeholder="Ex: ASUS" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">País de Origem</label>
+            <input type="text" class="form-input" id="brand-country" value="Internacional">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Categoria Principal</label>
+            <input type="text" class="form-input" id="brand-category" value="Hardware & Dispositivos">
+          </div>
+
+          <div class="form-group form-full">
+            <label class="form-label">Website Oficial</label>
+            <input type="url" class="form-input" id="brand-website" placeholder="https://...">
+          </div>
+
+          <div class="form-group form-full">
+            <label class="form-label">Descrição Institucional</label>
+            <textarea class="form-textarea" id="brand-desc" placeholder="Resumo sobre a empresa, foco de produtos e garantias..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="window.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Gravar Marca</button>
+        </div>
+      </form>
+    `;
+
+    openModal(html);
+  };
+
+  window.openEditBrandModal = (id) => {
+    const item = state.brands.find(b => b.id === id);
+    if (!item) return;
+
+    const html = `
+      <div class="modal-header">
+        <h2>Editar Marca: ${escapeHtml(item.name)}</h2>
+        <button class="btn-close-modal" onclick="window.closeModal()">&times;</button>
+      </div>
+
+      <form onsubmit="window.saveBrandForm(event, '${item.id}')">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nome da Marca *</label>
+            <input type="text" class="form-input" id="brand-name" value="${escapeHtml(item.name)}" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Sigla / Código *</label>
+            <input type="text" class="form-input" id="brand-code" value="${escapeHtml(item.code || '')}" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">País de Origem</label>
+            <input type="text" class="form-input" id="brand-country" value="${escapeHtml(item.country || '')}">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Categoria Principal</label>
+            <input type="text" class="form-input" id="brand-category" value="${escapeHtml(item.category || '')}">
+          </div>
+
+          <div class="form-group form-full">
+            <label class="form-label">Website Oficial</label>
+            <input type="url" class="form-input" id="brand-website" value="${escapeHtml(item.website || '')}">
+          </div>
+
+          <div class="form-group form-full">
+            <label class="form-label">Descrição Institucional</label>
+            <textarea class="form-textarea" id="brand-desc">${escapeHtml(item.description || '')}</textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="window.closeModal()">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Guardar Alterações</button>
+        </div>
+      </form>
+    `;
+
+    openModal(html);
+  };
+
+  window.saveBrandForm = async (e, existingId) => {
+    e.preventDefault();
+    const payload = {
+      name: document.getElementById('brand-name').value.trim(),
+      code: document.getElementById('brand-code').value.trim().toUpperCase(),
+      country: document.getElementById('brand-country').value.trim(),
+      category: document.getElementById('brand-category').value.trim(),
+      website: document.getElementById('brand-website').value.trim(),
+      description: document.getElementById('brand-desc').value.trim()
+    };
+
+    try {
+      if (existingId) {
+        await apiFetch(`/brands/${existingId}`, { method: 'PUT', body: JSON.stringify(payload) });
+        showToast('Marca atualizada com sucesso!', 'success');
+      } else {
+        await apiFetch('/brands', { method: 'POST', body: JSON.stringify(payload) });
+        showToast('Nova marca adicionada com sucesso!', 'success');
+      }
+
+      closeModal();
+      await loadAllData();
+      syncLocalBackup();
+    } catch (err) {
+      alert('Erro: ' + err.message);
+    }
+  };
+
+  window.deleteBrandPrompt = async (id) => {
+    const item = state.brands.find(b => b.id === id);
+    if (!item) return;
+
+    const modCount = state.models.filter(m => m.brandId === id).length;
+    if (modCount > 0) {
+      alert(`Não é possível eliminar a marca '${item.name}' porque tem ${modCount} modelos registados.`);
+      return;
+    }
+
+    if (!confirm(`Deseja eliminar a marca '${item.name}'?`)) return;
+
+    try {
+      await apiFetch(`/brands/${id}`, { method: 'DELETE' });
+      showToast('Marca eliminada!', 'success');
+      await loadAllData();
+      syncLocalBackup();
+    } catch (err) {
+      alert('Erro: ' + err.message);
+    }
+  };
+
+  // ==========================================================
+  // EXPORTAÇÕES E IMPORTAÇÕES
+  // ==========================================================
+  window.exportCSV = () => {
+    const items = state.equipments;
+    if (!items || items.length === 0) {
+      alert('Sem equipamentos para exportar.');
+      return;
+    }
+
+    const headers = ['Patrimonio', 'NumeroDeSerie', 'Marca', 'Modelo', 'Categoria', 'Estado', 'AtribuidoA', 'Localizacao', 'DataAquisicao', 'ValorEUR', 'Especificacoes'];
+    const rows = items.map(e => [
+      `"${(e.assetTag || '').replace(/"/g, '""')}"`,
+      `"${(e.serialNumber || '').replace(/"/g, '""')}"`,
+      `"${(e.brandName || '').replace(/"/g, '""')}"`,
+      `"${(e.modelName || '').replace(/"/g, '""')}"`,
+      `"${(e.category || '').replace(/"/g, '""')}"`,
+      `"${(e.status || '').replace(/"/g, '""')}"`,
+      `"${(e.assignedTo || '').replace(/"/g, '""')}"`,
+      `"${(e.location || '').replace(/"/g, '""')}"`,
+      `"${(e.acquisitionDate || '').replace(/"/g, '""')}"`,
+      Number(e.value || 0).toFixed(2),
+      `"${(e.specs || '').replace(/"/g, '""')}"`
+    ]);
+
+    const csvContent = '\uFEFF' + headers.join(';') + '\n' + rows.map(r => r.join(';')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `inventario-equipamentos-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+    showToast('Ficheiro CSV gerado e descarregado!', 'success');
+  };
+
+  window.exportJSON = () => {
+    const data = {
+      metadata: {
+        exportedAt: new Date().toISOString(),
+        totalBrands: state.brands.length,
+        totalModels: state.models.length,
+        totalEquipments: state.equipments.length
+      },
+      brands: state.brands,
+      models: state.models,
+      equipments: state.equipments
+    };
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `backup-inventario-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+    showToast('Backup JSON descarregado!', 'success');
+  };
+
+  window.handleImportFile = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const parsed = JSON.parse(e.target.result);
+        if (!parsed.brands || !parsed.models || !parsed.equipments) {
+          throw new Error('Formato JSON incompatível. O ficheiro deve conter marcas, modelos e equipamentos.');
+        }
+
+        await apiFetch('/import', { method: 'POST', body: JSON.stringify(parsed) });
+        showToast('Dados importados com sucesso!', 'success');
+        await loadAllData();
+        syncLocalBackup();
+      } catch (err) {
+        alert('Falha ao importar: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  window.resetDatabasePrompt = async () => {
+    if (!confirm('Atenção: Esta ação irá repor o inventário para os 200 equipamentos originais (5 Marcas, 50 Modelos). Deseja continuar?')) {
+      return;
+    }
+
+    try {
+      await apiFetch('/reset', { method: 'POST' });
+      showToast('Inventário restaurado para os 200 equipamentos originais!', 'success');
+      await loadAllData();
+      syncLocalBackup();
+      setTab('dashboard');
+    } catch (err) {
+      if (window.INITIAL_DATABASE) {
+        state.brands = JSON.parse(JSON.stringify(window.INITIAL_DATABASE.brands));
+        state.models = JSON.parse(JSON.stringify(window.INITIAL_DATABASE.models));
+        state.equipments = JSON.parse(JSON.stringify(window.INITIAL_DATABASE.equipments));
+        syncLocalBackup();
+        showToast('Inventário restaurado para os 200 equipamentos originais!', 'success');
+        render();
+        setTab('dashboard');
+      } else {
+        alert('Erro ao restaurar: ' + err.message);
+      }
+    }
+  };
+
+  // Inicialização
+  document.addEventListener('DOMContentLoaded', () => {
+    loadAllData();
+    setupElectronIntegration();
+  });
+
+  // Executa imediatamente se já carregado
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    loadAllData();
+    setupElectronIntegration();
+  }
+
+  // ==========================================================
+  // INTEGRAÇÃO COM ELECTRON (Menu Nativo, Diálogos, etc.)
+  // ==========================================================
+  function setupElectronIntegration() {
+    if (!window.electronAPI) return; // não é Electron
+
+    // Navegação via menu nativo (Ctrl+1, Ctrl+2, etc.)
+    window.electronAPI.onNavigate((tab) => {
+      setTab(tab);
+    });
+
+    // Reset da base de dados via menu Ferramentas
+    window.electronAPI.onResetDatabase(() => {
+      window.resetDatabasePrompt();
+    });
+
+    // Exportar CSV via menu (com diálogo nativo de guardar ficheiro)
+    window.electronAPI.onExportCsvToPath(async (filePath) => {
+      const items = state.equipments;
+      const headers = ['Patrimonio', 'NumeroDeSerie', 'Marca', 'Modelo', 'Categoria', 'Estado', 'AtribuidoA', 'Localizacao', 'DataAquisicao', 'ValorEUR', 'Especificacoes'];
+      const rows = items.map(e => [
+        `"${(e.assetTag || '').replace(/"/g, '""')}"`,
+        `"${(e.serialNumber || '').replace(/"/g, '""')}"`,
+        `"${(e.brandName || '').replace(/"/g, '""')}"`,
+        `"${(e.modelName || '').replace(/"/g, '""')}"`,
+        `"${(e.category || '').replace(/"/g, '""')}"`,
+        `"${(e.status || '').replace(/"/g, '""')}"`,
+        `"${(e.assignedTo || '').replace(/"/g, '""')}"`,
+        `"${(e.location || '').replace(/"/g, '""')}"`,
+        `"${(e.acquisitionDate || '').replace(/"/g, '""')}"`,
+        Number(e.value || 0).toFixed(2),
+        `"${(e.specs || '').replace(/"/g, '""')}"`
+      ]);
+      const csvContent = '\uFEFF' + headers.join(';') + '\n' + rows.map(r => r.join(';')).join('\n');
+
+      const result = await window.electronAPI.saveFile(filePath, csvContent);
+      if (result.success) {
+        showToast(`CSV exportado com sucesso para: ${filePath.split('\\').pop()}`, 'success');
+      } else {
+        showToast('Erro ao exportar: ' + result.error, 'error');
+      }
+    });
+
+    // Exportar JSON completo via menu
+    window.electronAPI.onExportJsonToPath(async (filePath) => {
+      const data = {
+        metadata: {
+          exportedAt: new Date().toISOString(),
+          totalBrands: state.brands.length,
+          totalModels: state.models.length,
+          totalEquipments: state.equipments.length
+        },
+        brands: state.brands,
+        models: state.models,
+        equipments: state.equipments
+      };
+      const result = await window.electronAPI.saveFile(filePath, JSON.stringify(data, null, 2));
+      if (result.success) {
+        showToast(`Backup JSON guardado: ${filePath.split('\\').pop()}`, 'success');
+      } else {
+        showToast('Erro ao exportar: ' + result.error, 'error');
+      }
+    });
+
+    // Importar JSON via menu
+    window.electronAPI.onImportJsonFromPath(async (filePath) => {
+      const result = await window.electronAPI.readFile(filePath);
+      if (!result.success) {
+        showToast('Erro ao ler ficheiro: ' + result.error, 'error');
+        return;
+      }
+      try {
+        const parsed = JSON.parse(result.content);
+        if (!parsed.brands || !parsed.models || !parsed.equipments) {
+          throw new Error('Estrutura JSON inválida.');
+        }
+        await apiFetch('/import', { method: 'POST', body: JSON.stringify(parsed) });
+        showToast('Dados importados com sucesso!', 'success');
+        await loadAllData();
+        syncLocalBackup();
+      } catch (err) {
+        // Fallback offline
+        try {
+          const parsed = JSON.parse(result.content);
+          state.brands = parsed.brands || [];
+          state.models = parsed.models || [];
+          state.equipments = parsed.equipments || [];
+          syncLocalBackup();
+          showToast('Dados importados (modo local)!', 'success');
+          render();
+        } catch (e2) {
+          showToast('Erro: ' + e2.message, 'error');
+        }
+      }
+    });
+  }
+
+  // Sobrescreve exportCSV para usar diálogo nativo quando em Electron
+  const _originalExportCSV = window.exportCSV;
+  window.exportCSV = async function() {
+    if (window.electronAPI) {
+      const result = await window.electronAPI.showSaveDialog({
+        title: 'Exportar Inventário como CSV',
+        defaultPath: `inventario-${new Date().toISOString().slice(0, 10)}.csv`,
+        filters: [
+          { name: 'CSV (compatível Excel)', extensions: ['csv'] },
+          { name: 'Todos os ficheiros', extensions: ['*'] }
+        ]
+      });
+      if (!result.canceled && result.filePath) {
+        window.electronAPI.onExportCsvToPath && null; // evita chamar o listener
+        const items = state.equipments;
+        const headers = ['Patrimonio', 'NumeroDeSerie', 'Marca', 'Modelo', 'Categoria', 'Estado', 'AtribuidoA', 'Localizacao', 'DataAquisicao', 'ValorEUR', 'Especificacoes'];
+        const rows = items.map(e => [
+          `"${(e.assetTag || '').replace(/"/g, '""')}"`,
+          `"${(e.serialNumber || '').replace(/"/g, '""')}"`,
+          `"${(e.brandName || '').replace(/"/g, '""')}"`,
+          `"${(e.modelName || '').replace(/"/g, '""')}"`,
+          `"${(e.category || '').replace(/"/g, '""')}"`,
+          `"${(e.status || '').replace(/"/g, '""')}"`,
+          `"${(e.assignedTo || '').replace(/"/g, '""')}"`,
+          `"${(e.location || '').replace(/"/g, '""')}"`,
+          `"${(e.acquisitionDate || '').replace(/"/g, '""')}"`,
+          Number(e.value || 0).toFixed(2),
+          `"${(e.specs || '').replace(/"/g, '""')}"`
+        ]);
+        const csvContent = '\uFEFF' + headers.join(';') + '\n' + rows.map(r => r.join(';')).join('\n');
+        const saveResult = await window.electronAPI.saveFile(result.filePath, csvContent);
+        if (saveResult.success) {
+          showToast(`CSV exportado: ${result.filePath.split('\\').pop()}`, 'success');
+        } else {
+          showToast('Erro ao exportar!', 'error');
+        }
+      }
+    } else {
+      // Fallback browser: download direto
+      if (_originalExportCSV) _originalExportCSV();
+      else {
+        const items = state.equipments;
+        const headers = ['Patrimonio', 'NumeroDeSerie', 'Marca', 'Modelo', 'Categoria', 'Estado', 'AtribuidoA', 'Localizacao', 'DataAquisicao', 'ValorEUR'];
+        const rows = items.map(e => [
+          `"${e.assetTag}"`, `"${e.serialNumber}"`, `"${e.brandName}"`, `"${e.modelName}"`,
+          `"${e.category}"`, `"${e.status}"`, `"${e.assignedTo || ''}"`,
+          `"${e.location || ''}"`, `"${e.acquisitionDate}"`, Number(e.value || 0).toFixed(2)
+        ]);
+        const csv = '\uFEFF' + headers.join(';') + '\n' + rows.map(r => r.join(';')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `inventario-${new Date().toISOString().slice(0, 10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast('CSV exportado!', 'success');
+      }
+    }
+  };
+
+  // Sobrescreve exportJSON para usar diálogo nativo quando em Electron
+  window.exportJSON = async function() {
+    const data = {
+      metadata: { exportedAt: new Date().toISOString(), totalBrands: state.brands.length, totalModels: state.models.length, totalEquipments: state.equipments.length },
+      brands: state.brands, models: state.models, equipments: state.equipments
+    };
+    const content = JSON.stringify(data, null, 2);
+
+    if (window.electronAPI) {
+      const result = await window.electronAPI.showSaveDialog({
+        title: 'Guardar Backup Completo',
+        defaultPath: `backup-inventario-${new Date().toISOString().slice(0, 10)}.json`,
+        filters: [{ name: 'JSON', extensions: ['json'] }, { name: 'Todos', extensions: ['*'] }]
+      });
+      if (!result.canceled && result.filePath) {
+        const saveResult = await window.electronAPI.saveFile(result.filePath, content);
+        if (saveResult.success) {
+          showToast(`Backup guardado: ${result.filePath.split('\\').pop()}`, 'success');
+        } else {
+          showToast('Erro ao guardar!', 'error');
+        }
+      }
+    } else {
+      const blob = new Blob([content], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `backup-inventario-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      showToast('Backup JSON descarregado!', 'success');
+    }
+  };
 })();
