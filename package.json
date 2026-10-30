@@ -1,0 +1,15 @@
+{
+  "name": "gestor-inventario-js",
+  "version": "1.0.0",
+  "description": "Gestor de Inventário 100% JavaScript (Frontend e Backend)",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["inventario", "javascript", "stock", "gestor"],
+  "author": "Antigravity",
+  "license": "MIT"
+}
+
