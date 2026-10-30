@@ -1,16 +1,9 @@
-/**
- * ============================================================================
- * GESTOR DE INVENTÁRIO - 100% JAVASCRIPT
- * Interface, lógica, estilos dinâmicos e persistência criados em puro JS
- * ============================================================================
- */
+// Gestor de Inventário - Frontend
 
 (function () {
   'use strict';
 
-  // --------------------------------------------------------------------------
-  // 1. INJEÇÃO DINÂMICA DE ESTILOS CSS VIA JAVASCRIPT
-  // --------------------------------------------------------------------------
+  // Estilos da interface
   function injectStyles() {
     const css = `
       :root {
@@ -761,9 +754,7 @@
     document.head.appendChild(styleEl);
   }
 
-  // --------------------------------------------------------------------------
-  // 2. ESTADO GLOBAL DA APLICAÇÃO (STATE)
-  // --------------------------------------------------------------------------
+  // Estado global da aplicação
   const state = {
     products: [],
     stats: {
@@ -795,9 +786,7 @@
     isApiAvailable: true
   };
 
-  // --------------------------------------------------------------------------
-  // 3. CAMADA DE API E PERSISTÊNCIA LOCAL (CLIENTE + SERVIDOR)
-  // --------------------------------------------------------------------------
+  // Comunicação com API e armazenamento local
   const STORAGE_KEY = 'gestor_inventario_local_db';
 
   async function apiRequest(endpoint, options = {}) {
@@ -1104,9 +1093,7 @@
     showToast('Exportação CSV gerada com sucesso!', 'success');
   }
 
-  // --------------------------------------------------------------------------
-  // 4. SISTEMA DE TOASTS EM JAVASCRIPT
-  // --------------------------------------------------------------------------
+  // Notificações toast
   let toastContainer = null;
   function showToast(message, type = 'info') {
     if (!toastContainer) {
@@ -1134,9 +1121,7 @@
     }, 3500);
   }
 
-  // --------------------------------------------------------------------------
-  // 5. CONSTRUTOR DE INTERFACE (DOM 100% DINÂMICO VIA JAVASCRIPT)
-  // --------------------------------------------------------------------------
+  // Interface e componentes de renderização
   const appRoot = document.getElementById('app');
 
   function renderApp() {
@@ -1174,11 +1159,11 @@
     titleBox.className = 'header-title-box';
     titleBox.innerHTML = `
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
-        <span class="header-badge">100% JavaScript Nativo</span>
-        ${state.isApiAvailable ? '<span class="header-badge" style="background:#059669; color:#fff;">Servidor Conectado</span>' : '<span class="header-badge" style="background:#d97706; color:#fff;">Modo Navegador</span>'}
+        <span class="header-badge">v1.0</span>
+        ${state.isApiAvailable ? '<span class="header-badge" style="background:#059669; color:#fff;">Online</span>' : '<span class="header-badge" style="background:#d97706; color:#fff;">Offline</span>'}
       </div>
-      <h1><span>📦</span> Gestor de Inventário Inteligente</h1>
-      <p>Controlo integral de stock, filtros avançados, estatísticas e gestão em tempo real.</p>
+      <h1>Gestor de Inventário</h1>
+      <p>Gestão e controlo de stock em tempo real.</p>
     `;
 
     const actions = document.createElement('div');
@@ -1586,9 +1571,7 @@
     return grid;
   }
 
-  // --------------------------------------------------------------------------
-  // 6. MODAL DINÂMICO DE ADICIONAR / EDITAR PRODUTO
-  // --------------------------------------------------------------------------
+  // Modal de criação / edição de produto
   let modalBackdrop = null;
 
   function renderProductModal() {
@@ -1739,9 +1722,7 @@
     }
   }
 
-  // --------------------------------------------------------------------------
-  // 7. MODAL DE CONFIRMAÇÃO DE ELIMINAR PRODUTO
-  // --------------------------------------------------------------------------
+  // Modal de eliminação
   let deleteModalBackdrop = null;
 
   function renderDeleteModal() {
@@ -1817,9 +1798,7 @@
       .replace(/'/g, '&#039;');
   }
 
-  // --------------------------------------------------------------------------
-  // 8. INICIALIZAÇÃO DA APLICAÇÃO
-  // --------------------------------------------------------------------------
+  // Inicialização
   function init() {
     injectStyles();
     loadData();

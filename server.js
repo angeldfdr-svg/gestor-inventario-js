@@ -1,6 +1,4 @@
-// ============================================================================
-// Gestor de Inventário - Servidor HTTP REST API (100% JavaScript Nativo)
-// ============================================================================
+// Gestor de Inventário - Servidor HTTP e API REST
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -451,10 +449,6 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`\n=============================================================`);
-  console.log(`  GESTOR DE INVENTÁRIO (100% JavaScript)`);
-  console.log(`  Servidor ativo em: http://localhost:${PORT}`);
-  console.log(`  Pressione Ctrl+C para encerrar`);
-  console.log(`=============================================================\n`);
+  console.log(`Servidor ativo em http://localhost:${PORT}`);
 });
 

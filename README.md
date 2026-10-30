@@ -1,60 +1,70 @@
-# 📦 Gestor de Inventário (100% JavaScript)
+# Gestor de Inventário
 
-Uma aplicação completa de gestão de inventário e controlo de stock desenvolvida **exclusivamente em JavaScript** (Frontend e Backend), sem recurso a outras linguagens ou frameworks externos.
+Aplicação web para controlo de stock e gestão de artigos, desenvolvida em JavaScript (Node.js no backend e Vanilla JS no frontend).
 
----
+## Funcionalidades
 
-## ✨ Funcionalidades Principais
+- **Pesquisa em tempo real**: Filtragem instantânea por nome de produto, código SKU, fornecedor e descrição.
+- **Filtros e ordenação**:
+  - Filtro por categoria com contagem automática de artigos.
+  - Filtro por estado de stock (Em Stock, Stock Baixo e Esgotado).
+  - Ordenação por nome, preço, quantidade em stock e data de atualização.
+- **Gestão de produtos**:
+  - Adição de novos produtos com gerador de SKU e validação de campos.
+  - Edição de informações existentes.
+  - Remoção de produtos com confirmação antes da eliminação.
+  - Ajuste rápido de quantidade (+ / -) diretamente na listagem.
+- **Painel de métricas**:
+  - Total de produtos registados.
+  - Total de unidades disponíveis.
+  - Valor financeiro global do inventário.
+  - Alertas de rutura e nível baixo de stock.
+- **Visualização**:
+  - Alternância entre vista em tabela e vista em grelha.
+- **Exportação**:
+  - Descarregamento dos dados em formato CSV.
+- **Armazenamento**:
+  - Persistência em ficheiro JSON no servidor.
+  - Suporte a funcionamento local/offline com fallback em LocalStorage.
 
-- 🔍 **Pesquisa em Tempo Real**: Pesquisa dinâmica instantânea por Nome, SKU, Fornecedor ou Descrição.
-- 🎯 **Filtros Avançados**:
-  - Filtro por Categoria (calculado dinamicamente com contagem de produtos).
-  - Filtro por Estado de Stock em botões interativos (*Em Stock*, *Stock Baixo*, *Esgotados*).
-  - Ordenação por Nome (A-Z / Z-A), Preço (Crescente / Decrescente), Quantidade em stock e Data.
-- ➕ **Adicionar Produto**: Modal interativo com validação de campos, gerador automático de SKU e definição de stock mínimo.
-- ✏️ **Editar Produto**: Atualização de dados com preenchimento automático.
-- 🗑️ **Eliminar Produto**: Modal de confirmação seguro antes de apagar permanentemente.
-- ⚡ **Ajuste Rápido de Stock**: Botões `+` e `-` diretamente na listagem para incrementar ou diminuir unidades.
-- 📊 **Dashboard de Métricas**:
-  - Total de produtos registados
-  - Unidades totais em stock
-  - Valor total do inventário em Euros (€)
-  - Alerta de itens com stock baixo e itens esgotados
-- 🔲 **Modos de Visualização**: Alternância com um clique entre visualização em **Tabela** detalhada e **Grelha de Cartões**.
-- 📥 **Exportação de Dados**: Exportar o inventário completo para ficheiro `.CSV`.
-- 💾 **Persistência Dupla**:
-  - Ficheiro JSON no backend (`data/inventory.json`) via servidor Node.js REST API.
-  - Modo Offline transparente (LocalStorage) caso abra diretamente o ficheiro `public/index.html`.
+## Requisitos
 
----
+- [Node.js](https://nodejs.org/) (versão 18 ou superior)
 
-## 🛠️ Como Iniciar a Aplicação
+## Instalação e Execução
 
-### Opção 1: Via Linha de Comandos (Node.js)
-Abra o terminal na pasta da aplicação e execute:
+1. Clone o repositório:
+```bash
+git clone https://github.com/angeldfdr-svg/gestor-inventario-js.git
+cd gestor-inventario-js
+```
+
+2. Inicie o servidor:
 ```bash
 node server.js
 ```
-Em seguida, abra o seu navegador e aceda a:
-👉 [http://localhost:3000](http://localhost:3000)
 
-### Opção 2: Duplo Clique (Windows)
-Basta dar duplo clique no ficheiro:
-👉 `iniciar.bat`
+3. Abra o navegador em:
+```
+http://localhost:3000
+```
 
----
+*(No Windows, também é possível iniciar executando o ficheiro `iniciar.bat`)*
 
-## 💻 Arquitetura 100% JavaScript
+## Estrutura do Projeto
 
-- **Backend (`server.js`)**: Servidor HTTP nativo e API REST construídos em puro JavaScript (Node.js), sem qualquer dependência externa (`node_modules`), garantindo arranque instantâneo.
-- **Frontend (`public/app.js`)**:
-  - Interface construída 100% em JavaScript via DOM APIs nativas (`document.createElement`).
-  - Sistema de estilos e design responsivo injetados dinamicamente via JS.
-  - Sistema de Toasts e Modais criados dinamicamente em tempo de execução.
-- **Estrutura de Ficheiros**:
-  - `server.js` - Servidor e API RESTful em JavaScript
-  - `public/index.html` - Ficheiro de entrada ultra-minimalista que invoca o `app.js`
-  - `public/app.js` - Todo o Frontend, renderização, estilos, filtros, pesquisa e lógica em JavaScript
-  - `data/inventory.json` - Base de dados persistente em formato JSON
-  - `iniciar.bat` - Atalho de inicialização rápida no Windows
+```text
+├── data/
+│   └── inventory.json      # Base de dados em formato JSON
+├── public/
+│   ├── app.js              # Lógica da interface, estilos e gestão de estado
+│   └── index.html          # Ponto de entrada HTML
+├── iniciar.bat             # Script de arranque para Windows
+├── package.json            # Metadados e scripts do projeto
+├── README.md               # Documentação
+└── server.js               # Servidor HTTP e API REST
+```
 
+## Licença
+
+MIT

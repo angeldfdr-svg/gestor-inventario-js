@@ -1,10 +1,6 @@
 @echo off
-title Gestor de Inventario (100%% JavaScript)
-echo ===================================================
-echo   A iniciar o Gestor de Inventario...
-echo ===================================================
-echo.
+title Gestor de Inventario
+echo A iniciar o servidor...
 start http://localhost:3000
 node server.js
 pause
-
